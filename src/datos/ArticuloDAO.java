@@ -89,6 +89,58 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo>
 		
 		return registros;
 	}
+        
+        public List<Articulo> listarArticuloVentaRuta() 
+	{
+		List<Articulo> registros=new ArrayList();
+		try {
+                    ps=CON.conectar().prepareStatement("SELECT a.id,a.codigo, a.nombre, a.precio_venta, a.stock FROM articulo a inner join categoria c ON a.categoria_id=c.id WHERE a.stock>0 AND a.activo=true ORDER BY c.nombre");
+			rs=ps.executeQuery();
+			
+			while(rs.next())
+			{
+				registros.add(new Articulo(rs.getInt(1),rs.getString(2), rs.getString(3),rs.getDouble(4), rs.getInt(5)));
+			}
+			ps.close();
+			rs.close();
+		} catch (SQLException e) {
+
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}finally{
+			ps=null;
+			rs=null;
+			CON.desconectar();
+		}
+		
+		return registros;
+	}
+        
+        /*
+        public List<Articulo> listarArticuloVentaRuta() 
+	{
+		List<Articulo> registros=new ArrayList();
+		try {
+                    ps=CON.conectar().prepareStatement("SELECT a.id,a.categoria_id, c.nombre as categoria_nombre, a.codigo, a.nombre, a.precio_venta, a.stock, a.descripcion, a.imagen, a.activo FROM articulo a inner join categoria c ON a.categoria_id=c.id WHERE a.stock>0 AND a.activo=true ORDER BY c.nombre");
+			rs=ps.executeQuery();
+			
+			while(rs.next())
+			{
+				registros.add(new Articulo(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getDouble(6), rs.getInt(7),rs.getString(8),rs.getString(9), rs.getBoolean(10)));
+			}
+			ps.close();
+			rs.close();
+		} catch (SQLException e) {
+
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}finally{
+			ps=null;
+			rs=null;
+			CON.desconectar();
+		}
+		
+		return registros;
+	}
+        */
 	
 	public Articulo obtenerArticuloCodigoIngreso(String codigo){
             Articulo art=null;
@@ -206,15 +258,15 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo>
         try {
             //ps=CON.conectar().prepareStatement("UPDATE categoria SET nombre=?, descripcion=? WHERE id=?");
 
-            ps = CON.conectar().prepareStatement("UPDATE articulo SET categoria_id=?,codigo=?, nombre=?,precio_venta=?,stock=?, descripcion=?, imagen=? WHERE id=?");
+            ps = CON.conectar().prepareStatement("UPDATE articulo SET categoria_id=?,codigo=?, nombre=?,precio_venta=?, descripcion=?, imagen=? WHERE id=?");
             ps.setInt(1, obj.getCategoriaId());
             ps.setString(2, obj.getCodigo());
             ps.setString(3, obj.getNombre());
             ps.setDouble(4, obj.getPrecioVenta());
-            ps.setInt(5, obj.getStock());
-            ps.setString(6, obj.getDescripcion());
-            ps.setString(7, obj.getImagen());
-            ps.setInt(8, obj.getId());
+            //ps.setInt(5, obj.getStock());
+            ps.setString(5, obj.getDescripcion());
+            ps.setString(6, obj.getImagen());
+            ps.setInt(7, obj.getId());
             if (ps.executeUpdate()>0){
                 resp=true;
             }

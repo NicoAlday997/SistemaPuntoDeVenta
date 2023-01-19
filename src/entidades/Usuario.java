@@ -9,7 +9,7 @@ package entidades;
  * @author alday
  */
 public class Usuario {
-        private int id;
+    private int id;
     private int rolId;
     private String rolNombre;
     private String nombre;

@@ -93,6 +93,13 @@ public class FrmIngreso extends javax.swing.JInternalFrame {
         tablaListado.getColumnModel().getColumn(3).setMinWidth(0);
         tablaListado.getTableHeader().getColumnModel().getColumn(3).setMaxWidth(0);
         tablaListado.getTableHeader().getColumnModel().getColumn(3).setMinWidth(0);
+        
+        tablaListado.getColumnModel().getColumn(11).setMaxWidth(0);
+        tablaListado.getColumnModel().getColumn(11).setMinWidth(0);
+        tablaListado.getTableHeader().getColumnModel().getColumn(11).setMaxWidth(0);
+        tablaListado.getTableHeader().getColumnModel().getColumn(11).setMinWidth(0);
+        
+        
     } 
     
     private void crearDetalles(){
@@ -122,7 +129,7 @@ public class FrmIngreso extends javax.swing.JInternalFrame {
                    Double precioD=Double.parseDouble((String)getValueAt(row,4));
                    
                    if(cantD!=null && precioD!=null){
-                       super.setValueAt(Integer.parseInt(String.format("%.0f", cantD)),row, 6);
+                       //super.setValueAt(Integer.parseInt(String.format("%.0f", cantD)),row, 6);
                        return String.format("%.2f",cantD*precioD);
                    }else{
                        return 0;
@@ -155,7 +162,9 @@ public class FrmIngreso extends javax.swing.JInternalFrame {
         };
         
         
-        modeloDetalles.setColumnIdentifiers(new Object[] {"ID","CODIGO","ARTICULO","CANTIDAD","PRECIO","SUBTOTAL","EXISTENCIA"});
+        //modeloDetalles.setColumnIdentifiers(new Object[] {"ID","CODIGO","ARTICULO","CANTIDAD","PRECIO","SUBTOTAL","EXISTENCIA"});
+        modeloDetalles.setColumnIdentifiers(new Object[] {"ID","CODIGO","ARTICULO","CANTIDAD","PRECIO","SUBTOTAL"});
+
         tablaDetalles.setModel(modeloDetalles);
     }
     

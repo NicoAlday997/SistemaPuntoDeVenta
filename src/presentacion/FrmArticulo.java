@@ -141,7 +141,7 @@ public class FrmArticulo extends javax.swing.JInternalFrame {
         txtDescripcion.setText("");
         txtId.setText("");
         txtPrecioVenta.setText("");
-        txtStock.setText("");
+        //txtStock.setText("");
         this.imagen="";
         this.imagenAnt="";
         lblImagen.setIcon(null);
@@ -204,8 +204,6 @@ public class FrmArticulo extends javax.swing.JInternalFrame {
         txtCodigo = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtPrecioVenta = new javax.swing.JFormattedTextField();
-        jLabel8 = new javax.swing.JLabel();
-        txtStock = new javax.swing.JFormattedTextField();
         jLabel9 = new javax.swing.JLabel();
         lblImagen = new javax.swing.JLabel();
         btnAgregarImagen = new javax.swing.JButton();
@@ -427,15 +425,6 @@ public class FrmArticulo extends javax.swing.JInternalFrame {
 
         txtPrecioVenta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
 
-        jLabel8.setText("Stock (*)");
-
-        txtStock.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        txtStock.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtStockActionPerformed(evt);
-            }
-        });
-
         jLabel9.setText("Imagen");
 
         lblImagen.setBackground(new java.awt.Color(255, 255, 102));
@@ -479,9 +468,7 @@ public class FrmArticulo extends javax.swing.JInternalFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9))
+                            .addComponent(jLabel7))
                         .addGap(31, 31, 31)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -492,9 +479,8 @@ public class FrmArticulo extends javax.swing.JInternalFrame {
                                 .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnAgregarImagen))
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtStock, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                                .addComponent(txtPrecioVenta, javax.swing.GroupLayout.Alignment.LEADING)))))
+                            .addComponent(txtPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel9))
                 .addContainerGap(617, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -517,19 +503,15 @@ public class FrmArticulo extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txtPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
                             .addComponent(btnAgregarImagen))
-                        .addGap(0, 133, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
+                        .addGap(0, 171, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -597,12 +579,12 @@ public class FrmArticulo extends javax.swing.JInternalFrame {
             txtPrecioVenta.requestFocus();
             return;
         }
-        if(txtStock.getText().length()==0)
+        /*if(txtStock.getText().length()==0)
         {
             JOptionPane.showMessageDialog(this, "Debes ingresar un stock del articulo, es obligatorio.", "Sistema", JOptionPane.WARNING_MESSAGE);
             txtStock.requestFocus();
             return;
-        }
+        }*/
         
         if(txtDescripcion.getText().length()>255)
         {
@@ -625,7 +607,8 @@ public class FrmArticulo extends javax.swing.JInternalFrame {
             }
             Categoria seleccionado=(Categoria)cboCategoria.getSelectedItem();
 
-            resp=this.CONTROL.actualizar(Integer.parseInt(txtId.getText()),seleccionado.getId(),txtCodigo.getText(),txtNombre.getText(),this.nombreAnt,Double.parseDouble(txtPrecioVenta.getText()),Integer.parseInt(txtStock.getText()), txtDescripcion.getText(), imagenActual);
+            //Revisar que al actualizar se mantenga el mismo stock
+            resp=this.CONTROL.actualizar(Integer.parseInt(txtId.getText()),seleccionado.getId(),txtCodigo.getText(),txtNombre.getText(),this.nombreAnt,Double.parseDouble(txtPrecioVenta.getText()),0, txtDescripcion.getText(), imagenActual);
             
             if(resp.equals("OK"))
             {
@@ -648,7 +631,7 @@ public class FrmArticulo extends javax.swing.JInternalFrame {
         }else{
             //guardar
             Categoria seleccionado=(Categoria)cboCategoria.getSelectedItem();
-            resp=this.CONTROL.insertar(seleccionado.getId(),txtCodigo.getText(),txtNombre.getText(),Double.parseDouble(txtPrecioVenta.getText()),Integer.parseInt(txtStock.getText()), txtDescripcion.getText(), this.imagen);
+            resp=this.CONTROL.insertar(seleccionado.getId(),txtCodigo.getText(),txtNombre.getText(),Double.parseDouble(txtPrecioVenta.getText()),0, txtDescripcion.getText(), this.imagen);
             
             if(resp.equals("OK"))
             {
@@ -698,7 +681,7 @@ public class FrmArticulo extends javax.swing.JInternalFrame {
             txtCodigo.setText(codigo);
             txtNombre.setText(nombre);
             txtPrecioVenta.setText(precioVenta);
-            txtStock.setText(stock);
+            //txtStock.setText(stock);
             txtDescripcion.setText(descripcion);
             
             ImageIcon im=new ImageIcon(this.DIRECTORIO + this.imagenAnt);
@@ -770,10 +753,6 @@ public class FrmArticulo extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnActivarActionPerformed
 
-    private void txtStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStockActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtStockActionPerformed
-
     private void btnAgregarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarImagenActionPerformed
 
         JFileChooser file=new JFileChooser();
@@ -843,7 +822,6 @@ public class FrmArticulo extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -860,6 +838,5 @@ public class FrmArticulo extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JFormattedTextField txtPrecioVenta;
-    private javax.swing.JFormattedTextField txtStock;
     // End of variables declaration//GEN-END:variables
 }

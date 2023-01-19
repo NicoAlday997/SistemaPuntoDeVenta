@@ -27,9 +27,10 @@ import negocio.ArticuloControl;
 public class FrmSeleccionarArticuloVenta extends javax.swing.JDialog {
 
     private FrmVenta vista;
+    private FrmVentaRutas vistaRutas;
     private final ArticuloControl CONTROL;
     
-    
+   
     private int totalPorPagina=10;
     private int numPagina=1;
     private boolean primeraCarga=true;
@@ -42,6 +43,19 @@ public class FrmSeleccionarArticuloVenta extends javax.swing.JDialog {
         initComponents();
         this.setLocationRelativeTo(null);
         this.vista=frm;
+        this.setTitle("Seleccionar Artículos para la venta");
+        this.CONTROL=new ArticuloControl();
+        this.paginar();
+        this.listar("",false);
+        this.primeraCarga=false;
+        this.setVisible(true);
+    }
+    
+    public FrmSeleccionarArticuloVenta(java.awt.Frame parent, FrmVentaRutas frm, boolean modal) {
+        super(parent, modal);
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.vistaRutas=frm;
         this.setTitle("Seleccionar Artículos para la venta");
         this.CONTROL=new ArticuloControl();
         this.paginar();

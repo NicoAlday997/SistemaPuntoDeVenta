@@ -78,6 +78,8 @@ public class VentaControl
                         
                         
                         
+                        
+                        
 			this.modeloTabla.addRow(registro);
 			this.registrosMostrados=this.registrosMostrados+1;
 			
@@ -128,7 +130,9 @@ public class VentaControl
             return art;
         }
 	
-	public String insertar(int personaId,String tipoComprobante, String serieComprobante,String numComprobante, double impuesto, double total, double totUtilidad, DefaultTableModel modeloDetalles)
+	//public String insertar(int personaId,String tipoComprobante, String serieComprobante,String numComprobante, double impuesto, double total, double totUtilidad, DefaultTableModel modeloDetalles)
+        public String insertar(int personaId,String tipoComprobante, String serieComprobante,String numComprobante, double impuesto, double total, DefaultTableModel modeloDetalles)
+
 	{
 		if(DATOS.existe(serieComprobante, numComprobante))
 		{
@@ -143,22 +147,22 @@ public class VentaControl
                     obj.setNumComprobante(numComprobante);
                     obj.setImpuesto(impuesto);
                     obj.setTotal(total);
-                    obj.setTotUtilidad(totUtilidad);
+                   // obj.setTotUtilidad(totUtilidad);
                     
                     List<DetalleVenta> detalles=new ArrayList();
                     int articuloId;
                     int cantidad;
                     double precio;
                     double descuento;
-                    double utilidad;
+                    //double utilidad;
                     
                     for(int i=0; i<modeloDetalles.getRowCount(); i++){
                         articuloId=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 0)));
                         cantidad=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 4)));
                         precio=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 5)));
                         descuento=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 6)));
-                        utilidad=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 8)));
-                        detalles.add(new DetalleVenta(articuloId,cantidad,precio, descuento, utilidad));
+                        //utilidad=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 8)));
+                        detalles.add(new DetalleVenta(articuloId,cantidad,precio, descuento, 0));
                     }
                     obj.setDetalles(detalles);
                     

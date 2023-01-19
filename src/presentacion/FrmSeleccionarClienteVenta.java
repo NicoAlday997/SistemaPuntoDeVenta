@@ -15,6 +15,7 @@ import negocio.PersonaControl;
 public class FrmSeleccionarClienteVenta extends javax.swing.JDialog {
 
     
+    //private FrmVenta vista;
     private FrmVenta vista;
     private final PersonaControl CONTROL;
     private String accion;
@@ -30,8 +31,10 @@ public class FrmSeleccionarClienteVenta extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
+        //this.vista=frm;
         this.vista=frm;
         this.setTitle("Seleccione un cliente para la venta");
+        //nada
         
         
         this.CONTROL=new PersonaControl();
@@ -44,6 +47,7 @@ public class FrmSeleccionarClienteVenta extends javax.swing.JDialog {
         
         this.setVisible(true);
     }
+    
     
     private void paginar()
     {
@@ -673,10 +677,14 @@ public class FrmSeleccionarClienteVenta extends javax.swing.JDialog {
         if(tablaListado.getSelectedRowCount()==1){
 
             String id=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 0));
-            String nombre=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 2));
+            String nombre=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 1));
             
             this.vista.txtIdCliente.setText(id);
+            
             this.vista.txtNombreCliente.setText(nombre);
+            
+            
+            
             this.setVisible(false);
                     
         }else{

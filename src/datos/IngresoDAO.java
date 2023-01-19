@@ -112,6 +112,7 @@ public class IngresoDAO implements CrudIngresoInterface<Ingreso, DetalleIngreso>
                     ps.setDouble(7, obj.getTotal());
                     ps.setInt(8, obj.getTotExistencia());
                     ps.setString(9, "Aceptado");
+                                  
                     
                     int filasAfectadas=ps.executeUpdate();
                     rs=ps.getGeneratedKeys();
@@ -130,9 +131,11 @@ public class IngresoDAO implements CrudIngresoInterface<Ingreso, DetalleIngreso>
                             ps.setInt(2,item.getArticuloId());
                             ps.setInt(3, item.getCantidad());
                             ps.setDouble(4, item.getPrecio());
-                            ps.setInt(5, item.getExistencia());
+                            ps.setInt(5, item.getCantidad());
                             resp=ps.executeUpdate()>0;                     
                         }
+                       
+                        
                         conn.commit();
                     }else{
                         conn.rollback();

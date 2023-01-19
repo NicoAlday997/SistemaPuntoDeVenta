@@ -802,7 +802,9 @@ public class FrmSeleccionarArticuloCompra extends javax.swing.JDialog {
             String id=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 0));
             String codigo=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 3));
             String nombre=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 4));
-            String precio=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 5));            
+           // String precio=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 5));  
+            String precio="0";            
+
                     
             this.vista.agregarDetalles(id, codigo, nombre, precio);
         }else{

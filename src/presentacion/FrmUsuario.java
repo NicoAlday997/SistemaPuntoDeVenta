@@ -358,6 +358,12 @@ public class FrmUsuario extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Rol (*)");
 
+        cboRol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboRolActionPerformed(evt);
+            }
+        });
+
         jLabel7.setText("Número Documento");
 
         txtNumDocumento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
@@ -733,6 +739,10 @@ public class FrmUsuario extends javax.swing.JInternalFrame {
     private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTelefonoActionPerformed
+
+    private void cboRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboRolActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboRolActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

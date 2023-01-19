@@ -8,15 +8,16 @@ import java.sql.Connection;
 import database.Conexion;
 import datos.interfaces.CrudVentaInterface;
 import entidades.DetalleVenta;
-import entidades.Venta;
+import entidades.Venta;  
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
+import javax.swing.JOptionPane; 
 import java.sql.Statement;
 import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.CallableStatement;
 
 /**
  *
@@ -26,7 +27,10 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
 
     private final Conexion CON;
     private java.sql.PreparedStatement ps;
+    //private java.sql.PreparedStatement ps2;
     private java.sql.ResultSet rs;
+   // private java.sql.ResultSet rs2;
+    private CallableStatement stmt=null;
     private boolean resp;
         
     public VentaDAO()
@@ -98,6 +102,9 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
                     conn=CON.conectar();
                     conn.setAutoCommit(false);
                     String sqlInsertVenta="INSERT INTO venta (persona_id, usuario_id, fecha, tipo_comprobante, serie_comprobante, num_comprobante, impuesto, total, total_utilidad,estado)VALUES (?,?,now(),?,?,?,?,?,?,?)";
+                    String sqlUtilidad="";
+                    
+                    //Cuando insertamos venta, hacemos calculo para la utilidad
   
                     ps = conn.prepareStatement(sqlInsertVenta, Statement.RETURN_GENERATED_KEYS);
                     ps.setInt(1, obj.getPersonaId());
@@ -106,7 +113,7 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
                     ps.setString(4, obj.getSerieComprobante());
                     ps.setString(5, obj.getNumComprobante());
                     ps.setDouble(6, obj.getImpuesto());
-                    ps.setDouble(7, obj.getTotal());
+                    ps.setDouble(7, obj.getTotal()); 
                     ps.setDouble(8, obj.getTotUtilidad());
                     ps.setString(9, "Aceptado");
                     
@@ -122,13 +129,38 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
                         String sqlInsertDetalle="INSERT INTO detalle_venta (venta_id, articulo_id, cantidad,precio,descuento,utilidad) VALUES (?,?,?,?,?,?)";
                         ps=conn.prepareStatement(sqlInsertDetalle);
                         
+                                             
                         for(DetalleVenta item: obj.getDetalles()){
+                            
                             ps.setInt(1, idGenerado);
                             ps.setInt(2,item.getArticuloId());
                             ps.setInt(3, item.getCantidad());
                             ps.setDouble(4, item.getPrecio());
                             ps.setDouble(5, item.getDescuento());
-                            ps.setDouble(6, item.getUtilidad());
+                            
+                            System.out.println(item.getArticuloId()+", "+item.getCantidad()+", " + item.getPrecio()+" ,"+item.getDescuento());
+                            //Hacer calculo de la utilidad por producto
+                            //double uti=25;
+                           
+                            String sql2="{ CALL decremento(?,?,?,?,?)}";
+                           
+                            stmt=conn.prepareCall(sql2);
+                            
+                            stmt.setInt(1, item.getArticuloId());
+                            stmt.setInt(2, item.getCantidad());
+                            stmt.setDouble(3, item.getPrecio());
+                            stmt.setDouble(4, item.getDescuento());
+                            stmt.registerOutParameter(5, java.sql.Types.DECIMAL);
+
+                            // stmt.r
+                           
+                            stmt.execute();
+                            
+         
+                           // System.out.println("utilidad de: "+stmt.getDouble(5));
+                            ps.setDouble(6, stmt.getDouble(5));
+                            
+                            
                             resp=ps.executeUpdate()>0;                     
                         }
                         conn.commit();

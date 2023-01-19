@@ -96,7 +96,9 @@ public class IngresoControl
 		List<DetalleIngreso> lista=new ArrayList();
 		lista.addAll(DATOS.listarDetalle(id));
 		
-		String[] titulos= {"ID","CODIGO","ARTICULO","CANTIDAD", "PRECIO","SUBTOTAL", "EXISTENCIA"};
+		//String[] titulos= {"ID","CODIGO","ARTICULO","CANTIDAD", "PRECIO","SUBTOTAL", "EXISTENCIA"};
+                String[] titulos= {"ID","CODIGO","ARTICULO","CANTIDAD", "PRECIO","SUBTOTAL"};
+
 		
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 				
@@ -110,7 +112,7 @@ public class IngresoControl
                         registro[3]=Integer.toString(item.getCantidad());
                         registro[4]=Double.toString(item.getPrecio());
                         registro[5]=Double.toString(item.getSubtotal());
-                        registro[6]=Integer.toString(item.getExistencia());
+                        //registro[6]=Integer.toString(item.getExistencia());
                        
                         this.modeloTabla.addRow(registro);			
 		}

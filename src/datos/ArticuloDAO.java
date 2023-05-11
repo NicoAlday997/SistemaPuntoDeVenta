@@ -36,9 +36,11 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo>
 	@Override
 	public List<Articulo> listar(String texto,int totalPorPagina, int numPagina) 
 	{
+         
 		List<Articulo> registros=new ArrayList();
 		try {
-                    ps=CON.conectar().prepareStatement("SELECT a.id,a.categoria_id, c.nombre as categoria_nombre, a.codigo, a.nombre, a.precio_venta, a.stock, a.descripcion, a.imagen, a.activo FROM articulo a inner join categoria c ON a.categoria_id=c.id WHERE a.nombre LIKE ? ORDER BY a.id ASC LIMIT ?,?");
+
+                    ps=CON.conectar().prepareStatement("SELECT a.id,a.categoria_id, c.nombre as categoria_nombre, a.codigo, a.nombre, a.formato, a.precio_venta, a.stock, a.piezas, a.descripcion, a.imagen, c.comision, a.activo FROM articulo a inner join categoria c ON a.categoria_id=c.id WHERE a.nombre LIKE ? ORDER BY cast(a.codigo as DECIMAL) LIMIT ?,?");
 			ps.setString(1,"%" + texto +"%");
                         ps.setInt(2, (numPagina-1)*totalPorPagina);
                         ps.setInt(3, totalPorPagina);
@@ -46,7 +48,38 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo>
 			
 			while(rs.next())
 			{
-				registros.add(new Articulo(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getDouble(6), rs.getInt(7),rs.getString(8),rs.getString(9), rs.getBoolean(10)));
+				registros.add(new Articulo(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getInt(6), rs.getDouble(7),rs.getInt(8),rs.getInt(9),rs.getString(10),rs.getString(11), rs.getDouble(12),rs.getBoolean(13)));
+			}
+			ps.close();
+			rs.close();
+		} catch (SQLException e) {
+
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}finally{
+			ps=null;
+			rs=null;
+			CON.desconectar();
+		}
+		
+		return registros;
+	}
+        
+        public List<Articulo> listarCompra(String texto,int totalPorPagina, int numPagina) 
+	{
+         
+		List<Articulo> registros=new ArrayList();
+		try {
+
+                    ps=CON.conectar().prepareStatement(" SELECT a.id idA,a.categoria_id, c.nombre as categoria_nombre, a.codigo, a.nombre, a.formato, (select precio from articulo a, detalle_ingreso di, ingreso i where a.id=di.articulo_id and i.id=di.ingreso_id and a.id=idA and i.estado='Aceptado'" +
+                                                           " order by di.id desc limit 1) precio_compra,a.stock, a.piezas, a.descripcion, a.imagen, a.activo FROM articulo a inner join categoria c ON a.categoria_id=c.id WHERE a.nombre LIKE ? ORDER BY cast(a.codigo as DECIMAL) LIMIT ?,?");
+			ps.setString(1,"%" + texto +"%");
+                        ps.setInt(2, (numPagina-1)*totalPorPagina);
+                        ps.setInt(3, totalPorPagina);
+			rs=ps.executeQuery();
+			
+			while(rs.next())
+			{
+				registros.add(new Articulo(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getInt(6), rs.getDouble(7),rs.getInt(8),rs.getInt(9),rs.getString(10),rs.getString(11), rs.getBoolean(12)));
 			}
 			ps.close();
 			rs.close();
@@ -66,7 +99,7 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo>
 	{
 		List<Articulo> registros=new ArrayList();
 		try {
-                    ps=CON.conectar().prepareStatement("SELECT a.id,a.categoria_id, c.nombre as categoria_nombre, a.codigo, a.nombre, a.precio_venta, a.stock, a.descripcion, a.imagen, a.activo FROM articulo a inner join categoria c ON a.categoria_id=c.id WHERE a.nombre LIKE ? AND a.stock>0 AND a.activo=true ORDER BY a.id ASC LIMIT ?,?");
+                    ps=CON.conectar().prepareStatement("SELECT a.id,a.categoria_id, c.nombre as categoria_nombre, a.codigo, a.nombre, a.formato,a.precio_venta, a.stock, a.piezas, a.descripcion, a.imagen, a.activo FROM articulo a inner join categoria c ON a.categoria_id=c.id WHERE a.nombre LIKE ? AND (a.stock>0 or a.piezas>0) AND a.activo=true ORDER BY cast(a.codigo as DECIMAL) LIMIT ?,?");
 			ps.setString(1,"%" + texto +"%");
                         ps.setInt(2, (numPagina-1)*totalPorPagina);
                         ps.setInt(3, totalPorPagina);
@@ -74,7 +107,7 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo>
 			
 			while(rs.next())
 			{
-				registros.add(new Articulo(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getDouble(6), rs.getInt(7),rs.getString(8),rs.getString(9), rs.getBoolean(10)));
+				registros.add(new Articulo(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getInt(6), rs.getDouble(7),rs.getInt(8),rs.getInt(9),rs.getString(10),rs.getString(11), rs.getBoolean(12)));
 			}
 			ps.close();
 			rs.close();
@@ -94,12 +127,13 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo>
 	{
 		List<Articulo> registros=new ArrayList();
 		try {
-                    ps=CON.conectar().prepareStatement("SELECT a.id,a.codigo, a.nombre, a.precio_venta, a.stock FROM articulo a inner join categoria c ON a.categoria_id=c.id WHERE a.stock>0 AND a.activo=true ORDER BY c.nombre");
+                      ps=CON.conectar().prepareStatement("SELECT a.id,a.codigo, a.nombre,a.formato, a.precio_venta, a.stock, a.piezas, c.comision FROM articulo a inner join categoria c ON a.categoria_id=c.id WHERE a.activo=true ORDER BY cast(a.codigo as DECIMAL)");
+
 			rs=ps.executeQuery();
 			
 			while(rs.next())
 			{
-				registros.add(new Articulo(rs.getInt(1),rs.getString(2), rs.getString(3),rs.getDouble(4), rs.getInt(5)));
+				registros.add(new Articulo(rs.getInt(1),rs.getString(2), rs.getString(3),rs.getInt(4), rs.getDouble(5), rs.getInt(6), rs.getInt(7), rs.getDouble(8)));
 			}
 			ps.close();
 			rs.close();
@@ -115,42 +149,16 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo>
 		return registros;
 	}
         
-        /*
-        public List<Articulo> listarArticuloVentaRuta() 
-	{
-		List<Articulo> registros=new ArrayList();
-		try {
-                    ps=CON.conectar().prepareStatement("SELECT a.id,a.categoria_id, c.nombre as categoria_nombre, a.codigo, a.nombre, a.precio_venta, a.stock, a.descripcion, a.imagen, a.activo FROM articulo a inner join categoria c ON a.categoria_id=c.id WHERE a.stock>0 AND a.activo=true ORDER BY c.nombre");
-			rs=ps.executeQuery();
-			
-			while(rs.next())
-			{
-				registros.add(new Articulo(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getDouble(6), rs.getInt(7),rs.getString(8),rs.getString(9), rs.getBoolean(10)));
-			}
-			ps.close();
-			rs.close();
-		} catch (SQLException e) {
-
-			JOptionPane.showMessageDialog(null, e.getMessage());
-		}finally{
-			ps=null;
-			rs=null;
-			CON.desconectar();
-		}
-		
-		return registros;
-	}
-        */
 	
 	public Articulo obtenerArticuloCodigoIngreso(String codigo){
             Articulo art=null;
             try {
-                    ps=CON.conectar().prepareStatement("SELECT id,codigo,nombre,precio_venta, stock FROM articulo WHERE codigo=?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+                    ps=CON.conectar().prepareStatement("SELECT id,codigo,nombre, formato,precio_venta, stock, piezas FROM articulo WHERE codigo=?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			ps.setString(1,codigo);
                         rs=ps.executeQuery();
 			
                         if(rs.first()){
-                            art=new Articulo(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getDouble(4), rs.getInt(5));
+                            art=new Articulo(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4), rs.getDouble(5), rs.getInt(6), rs.getInt(7));
                         }
 			ps.close();
 			rs.close();
@@ -169,12 +177,12 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo>
         public Articulo obtenerArticuloCodigoVenta(String codigo){
             Articulo art=null;
             try {
-                    ps=CON.conectar().prepareStatement("SELECT id,codigo,nombre,precio_venta, stock FROM articulo WHERE codigo=? AND stock>0 AND activo=true", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+                    ps=CON.conectar().prepareStatement("SELECT id,codigo,nombre, formato,precio_venta, stock, piezas, comision FROM articulo WHERE codigo=? AND stock>0 AND activo=true", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			ps.setString(1,codigo);
                         rs=ps.executeQuery();
 			
                         if(rs.first()){
-                            art=new Articulo(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getDouble(4), rs.getInt(5));
+                            art=new Articulo(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4), rs.getDouble(5), rs.getInt(6), rs.getInt(7), rs.getDouble(8));
                         }
 			ps.close();
 			rs.close();
@@ -195,12 +203,12 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo>
 	
 		resp=false;
 		try { 
-			ps=CON.conectar().prepareStatement("INSERT INTO articulo (categoria_id, codigo, nombre, precio_venta, stock, descripcion,imagen, activo) VALUES (?,?,?,?,?,?,?,1)");
+			ps=CON.conectar().prepareStatement("INSERT INTO articulo (categoria_id, codigo, nombre, precio_venta, formato, descripcion,imagen, activo) VALUES (?,?,?,?,?,?,?,1)");
 			ps.setInt(1, obj.getCategoriaId());
                         ps.setString(2,obj.getCodigo());
                         ps.setString(3, obj.getNombre());
                         ps.setDouble(4, obj.getPrecioVenta());
-                        ps.setInt(5, obj.getStock());
+                        ps.setInt(5, obj.getFormato());
 			ps.setString(6, obj.getDescripcion());
                         ps.setString(7, obj.getImagen());
 			if(ps.executeUpdate()>0)
@@ -222,51 +230,21 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo>
 		return resp;
 	}
 
-        /*
-	@Override
-	public boolean actualizar(Categoria obj) {
-
-		resp=false;
-		try {
-			ps=CON.conectar().prepareStatement("UPDATE categoria SET nombre=?, descripcion=? WHERE id=?");
-			ps.setString(1, obj.getNombre());
-			ps.setString(2, obj.getDescripcion());
-			ps.setInt(3, obj.getId());
-			if(ps.executeUpdate()>0)
-			{
-				resp=true;
-			}
-			
-			ps.close();
-			
-		} catch (SQLException e) {
-
-			JOptionPane.showMessageDialog(null, e.getMessage());
-		}finally{
-
-			ps=null;
-			CON.desconectar();
-		}
-		
-		return resp;
-	}
-*/
         
         @Override
     public boolean actualizar(Articulo obj) {
         resp=false;
         try {
-            //ps=CON.conectar().prepareStatement("UPDATE categoria SET nombre=?, descripcion=? WHERE id=?");
 
-            ps = CON.conectar().prepareStatement("UPDATE articulo SET categoria_id=?,codigo=?, nombre=?,precio_venta=?, descripcion=?, imagen=? WHERE id=?");
+            ps = CON.conectar().prepareStatement("UPDATE articulo SET categoria_id=?,codigo=?, nombre=?,precio_venta=?, formato=? ,descripcion=?, imagen=? WHERE id=?");
             ps.setInt(1, obj.getCategoriaId());
             ps.setString(2, obj.getCodigo());
             ps.setString(3, obj.getNombre());
             ps.setDouble(4, obj.getPrecioVenta());
-            //ps.setInt(5, obj.getStock());
-            ps.setString(5, obj.getDescripcion());
-            ps.setString(6, obj.getImagen());
-            ps.setInt(7, obj.getId());
+            ps.setInt(5, obj.getFormato());
+            ps.setString(6, obj.getDescripcion());
+            ps.setString(7, obj.getImagen());
+            ps.setInt(8, obj.getId());
             if (ps.executeUpdate()>0){
                 resp=true;
             }
@@ -370,7 +348,6 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo>
 		resp=false;
 		
 		try {
-			//ps=CON.conectar().prepareStatement("SELECT nombre FROM categoria WHERE nombre=?");
                         ps=CON.conectar().prepareStatement("SELECT nombre FROM articulo WHERE nombre=?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			ps.setString(1, texto);
@@ -398,5 +375,72 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo>
 		
 		return resp;
 	}
+        /*
+        public String ultimoSerie() {
+        String serieComprobante="";
+        try {
+            ps=CON.conectar().prepareStatement("SELECT serie_comprobante FROM venta_ruta order by cast(serie_comprobante as decimal) desc limit 1");            
+
+            rs=ps.executeQuery();
+            
+            while(rs.next()){
+                serieComprobante=rs.getString("serie_comprobante");
+            }            
+            ps.close();
+            rs.close();
+        }  catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } finally{
+            ps=null;
+            rs=null;
+            CON.desconectar();
+        }
+        return serieComprobante;
+    }*/
+    
+        /*
+    public String ultimoNumero(String serieComprobante) {
+        String numComprobante="";
+        try {
+            ps=CON.conectar().prepareStatement("SELECT num_comprobante FROM venta_ruta WHERE serie_comprobante=? order by cast(num_comprobante as decimal) desc limit 1");            
+            ps.setString(1, serieComprobante);
+            rs=ps.executeQuery();
+            
+            while(rs.next()){
+                numComprobante=rs.getString("num_comprobante");
+            }            
+            ps.close();
+            rs.close();
+        }  catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } finally{
+            ps=null;
+            rs=null;
+            CON.desconectar();
+        }
+        return numComprobante;
+    }*/
+    
+    public String ultimoNumero() {
+        String codigo="";
+        try {
+            ps=CON.conectar().prepareStatement("SELECT codigo FROM articulo order by cast(codigo as decimal) desc limit 1;");            
+            rs=ps.executeQuery();
+            
+            while(rs.next()){
+                codigo=rs.getString("codigo");
+            }            
+            ps.close();
+            rs.close();
+        }  catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } finally{
+            ps=null;
+            rs=null;
+            CON.desconectar();
+        }
+        return codigo;
+    }
+    
 
 }

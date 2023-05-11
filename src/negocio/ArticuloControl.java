@@ -51,13 +51,13 @@ public class ArticuloControl
 		List<Articulo> lista=new ArrayList();
 		lista.addAll(DATOS.listar(texto, totalPorPagina, numPagina));
 		
-		String[] titulos= {"Id","Categoria Id","Categoria","Código", "Nombre","Precio Venta","Stock", "Descripcion","Imagen", "Estado"};
+		String[] titulos= {"Id","Categoria Id","Categoria","Código", "Nombre","Formato","Precio Venta","Unidades", "Piezas","Descripcion","Imagen", "Estado"};
 		
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 		
 		String estado;
 		
-		String[] registro=new String[10];
+		String[] registro=new String[12];
 		
 		this.registrosMostrados=0;
 		
@@ -76,11 +76,58 @@ public class ArticuloControl
                         registro[2]=item.getCategoriaNombre();
                         registro[3]=item.getCodigo();
 			registro[4]=item.getNombre();
-                        registro[5]=Double.toString(item.getPrecioVenta());
-                        registro[6]=Integer.toString(item.getStock());              
-			registro[7]=item.getDescripcion();
-                        registro[8]=item.getImagen();
-			registro[9]=estado;
+                        registro[5]=Integer.toString(item.getFormato());
+                        registro[6]=Double.toString(item.getPrecioVenta());
+                        registro[7]=Integer.toString(item.getStock()); 
+                        registro[8]=Integer.toString(item.getPiezas());
+			registro[9]=item.getDescripcion();
+                        registro[10]=item.getImagen();
+			registro[11]=estado;
+			this.modeloTabla.addRow(registro);
+			this.registrosMostrados=this.registrosMostrados+1;
+			
+		}
+		
+		return this.modeloTabla;
+	}
+        
+        public DefaultTableModel listarArticuloCompra(String texto, int totalPorPagina, int numPagina)
+	{
+		List<Articulo> lista=new ArrayList();
+		lista.addAll(DATOS.listarCompra(texto, totalPorPagina, numPagina));
+		
+		String[] titulos= {"Id","Categoria Id","Categoria","Código", "Nombre","Formato","Precio Compra","Unidades", "Piezas","Descripcion","Imagen", "Estado"};
+		
+		this.modeloTabla=new DefaultTableModel(null, titulos);
+		
+		String estado;
+		
+		String[] registro=new String[12];
+		
+		this.registrosMostrados=0;
+		
+		for(Articulo item:lista)
+		{
+			if(item.isActivo())
+			{
+				estado="Activo";
+			}else
+			{
+				estado="Inactivo";
+			}
+			
+			registro[0]=Integer.toString(item.getId());
+                        registro[1]=Integer.toString(item.getCategoriaId());
+                        registro[2]=item.getCategoriaNombre();
+                        registro[3]=item.getCodigo();
+			registro[4]=item.getNombre();
+                        registro[5]=Integer.toString(item.getFormato());
+                        registro[6]=Double.toString(item.getPrecioVenta());
+                        registro[7]=Integer.toString(item.getStock()); 
+                        registro[8]=Integer.toString(item.getPiezas());
+			registro[9]=item.getDescripcion();
+                        registro[10]=item.getImagen();
+			registro[11]=estado;
 			this.modeloTabla.addRow(registro);
 			this.registrosMostrados=this.registrosMostrados+1;
 			
@@ -93,14 +140,13 @@ public class ArticuloControl
 	{
 		List<Articulo> lista=new ArrayList();
 		lista.addAll(DATOS.listarArticuloVenta(texto, totalPorPagina, numPagina));
-		
-		String[] titulos= {"Id","Categoria Id","Categoria","Código", "Nombre","Precio Venta","Stock", "Descripcion","Imagen", "Estado"};
+		String[] titulos= {"Id","Categoria Id","Categoria","Código", "Nombre","Formato","Precio Venta","Stock","Piezas", "Descripcion","Imagen", "Estado"};
 		
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 		
 		String estado;
 		
-		String[] registro=new String[10];
+		String[] registro=new String[12];
 		
 		this.registrosMostrados=0;
 		
@@ -119,11 +165,13 @@ public class ArticuloControl
                         registro[2]=item.getCategoriaNombre();
                         registro[3]=item.getCodigo();
 			registro[4]=item.getNombre();
-                        registro[5]=Double.toString(item.getPrecioVenta());
-                        registro[6]=Integer.toString(item.getStock());              
-			registro[7]=item.getDescripcion();
-                        registro[8]=item.getImagen();
-			registro[9]=estado;
+                        registro[5]=Integer.toString(item.getFormato());
+                        registro[6]=Double.toString(item.getPrecioVenta());
+                        registro[7]=Integer.toString(item.getStock());  
+                        registro[8]=Integer.toString(item.getPiezas());       
+			registro[9]=item.getDescripcion();
+                        registro[10]=item.getImagen();
+			registro[11]=estado;
 			this.modeloTabla.addRow(registro);
 			this.registrosMostrados=this.registrosMostrados+1;
 			
@@ -137,13 +185,13 @@ public class ArticuloControl
 		List<Articulo> lista=new ArrayList();
 		lista.addAll(DATOS.listarArticuloVentaRuta());
 		
-		String[] titulos= {"Id","Código", "Nombre","Precio Venta","Stock"};
+		String[] titulos= {"Id","Código", "Nombre","formato","Precio Venta","Stock","Piezas","Comision"};
 		
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 		
 		String estado;
 		
-		String[] registro=new String[5];
+		String[] registro=new String[8];
 		
 		this.registrosMostrados=0;
 		
@@ -160,8 +208,11 @@ public class ArticuloControl
 			registro[0]=Integer.toString(item.getId());
                         registro[1]=item.getCodigo();
 			registro[2]=item.getNombre();
-                        registro[3]=Integer.toString(item.getStock()); 
-                        registro[4]=Double.toString(item.getPrecioVenta());
+                        registro[3]=Integer.toString(item.getFormato());
+                        registro[4]=Integer.toString(item.getStock());
+                        registro[5]=Integer.toString(item.getPiezas());
+                        registro[6]=Double.toString(item.getPrecioVenta());
+                        registro[7]=Double.toString(item.getComision());
 			//registro[9]=estado;
 			this.modeloTabla.addRow(registro);
 			this.registrosMostrados=this.registrosMostrados+1;
@@ -171,50 +222,6 @@ public class ArticuloControl
 		return this.modeloTabla;
 	}
         
-        /*
-        public DefaultTableModel listarArticuloVentaRuta()
-	{
-		List<Articulo> lista=new ArrayList();
-		lista.addAll(DATOS.listarArticuloVentaRuta());
-		
-		String[] titulos= {"Id","Categoria Id","Categoria","Código", "Nombre","Precio Venta","Stock", "Descripcion","Imagen", "Estado"};
-		
-		this.modeloTabla=new DefaultTableModel(null, titulos);
-		
-		String estado;
-		
-		String[] registro=new String[10];
-		
-		this.registrosMostrados=0;
-		
-		for(Articulo item:lista)
-		{
-			if(item.isActivo())
-			{
-				estado="Activo";
-			}else
-			{
-				estado="Inactivo";
-			}
-			
-			registro[0]=Integer.toString(item.getId());
-                        registro[1]=Integer.toString(item.getCategoriaId());
-                        registro[2]=item.getCategoriaNombre();
-                        registro[3]=item.getCodigo();
-			registro[4]=item.getNombre();
-                        registro[5]=Double.toString(item.getPrecioVenta());
-                        registro[6]=Integer.toString(item.getStock());              
-			registro[7]=item.getDescripcion();
-                        registro[8]=item.getImagen();
-			registro[9]=estado;
-			this.modeloTabla.addRow(registro);
-			this.registrosMostrados=this.registrosMostrados+1;
-			
-		}
-		
-		return this.modeloTabla;
-	}
-        */
         
         public DefaultComboBoxModel seleccionar()
         {
@@ -230,7 +237,7 @@ public class ArticuloControl
             
         }
 	
-	public String insertar(int categoriaId,String codigo, String nombre,double precioVenta, int stock, String descripcion, String imagen)
+	public String insertar(int categoriaId,String codigo, String nombre,double precioVenta, int formato, String descripcion, String imagen)
 	{
 		if(DATOS.existe(nombre))
 		{
@@ -242,7 +249,7 @@ public class ArticuloControl
                     obj.setCodigo(codigo);
                     obj.setNombre(nombre);
                     obj.setPrecioVenta(precioVenta);
-                    obj.setStock(stock);
+                    obj.setFormato(formato);
                     obj.setDescripcion(descripcion);
                     obj.setImagen(imagen);
 			if(DATOS.insertar(obj))
@@ -256,7 +263,7 @@ public class ArticuloControl
 		}
 	}
 	
-	public String actualizar(int id,int categoriaId,String codigo, String nombre, String nombreAnt,double precioVenta, int stock, String descripcion, String imagen)
+	public String actualizar(int id,int categoriaId,String codigo, String nombre, String nombreAnt,double precioVenta, int formato, String descripcion, String imagen)
 	{
 		if(nombre.equals(nombreAnt))
 		{
@@ -265,7 +272,7 @@ public class ArticuloControl
                     obj.setCodigo(codigo);
                     obj.setNombre(nombre);
                     obj.setPrecioVenta(precioVenta);
-                    obj.setStock(stock);
+                    obj.setFormato(formato);
                     obj.setDescripcion(descripcion);
                     obj.setImagen(imagen);
 			
@@ -290,7 +297,7 @@ public class ArticuloControl
                             obj.setCodigo(codigo);
                             obj.setNombre(nombre);
                             obj.setPrecioVenta(precioVenta);
-                            obj.setStock(stock);
+                            obj.setFormato(formato);
                             obj.setDescripcion(descripcion);
                             obj.setImagen(imagen);
 				
@@ -337,6 +344,11 @@ public class ArticuloControl
 	{
 		return this.registrosMostrados;
 	}
+        
+        
+        public String ultimoNumero() {
+        return this.DATOS.ultimoNumero();
+        }
         
         public void reporteArticulos()
         {

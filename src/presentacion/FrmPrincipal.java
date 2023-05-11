@@ -6,6 +6,7 @@ package presentacion;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import javax.swing.ImageIcon;
 
 
 /**
@@ -19,13 +20,14 @@ public class FrmPrincipal extends javax.swing.JFrame {
      */
     public FrmPrincipal() {
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("/presentacion/images/punto_venta.png")).getImage());
+
         setExtendedState(MAXIMIZED_BOTH);
         this.cargaOpcionesMenu();
     }
     
     private void cargaOpcionesMenu()
     {
-        //System.out.println("Esta es: " + negocio.Variables.rolNombre);
         
         if(negocio.Variables.rolNombre.equals("Administrador")){
             mnuAlmacen.setEnabled(true);
@@ -34,18 +36,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
             mnuAcceso.setEnabled(true);
             itemConsultaCompras.setEnabled(true);
             itemConsultaVentas.setEnabled(true);
-        }else if(negocio.Variables.rolNombre.equals("Almacenero")){
-            mnuAlmacen.setEnabled(true);
-            mnuCompras.setEnabled(true);
-            mnuVentas.setEnabled(false);
-            mnuAcceso.setEnabled(false);
-            itemConsultaCompras.setEnabled(true);
-            itemConsultaVentas.setEnabled(false);
         }else if(negocio.Variables.rolNombre.equals("Vendedor")){
-            mnuAlmacen.setEnabled(false);
+            mnuAlmacen.setEnabled(true);
             mnuCompras.setEnabled(false);
             mnuVentas.setEnabled(true);
-            mnuAcceso.setEnabled(false);
+            mnuAcceso.setEnabled(true);
             itemConsultaCompras.setEnabled(false);
             itemConsultaVentas.setEnabled(true);
         }else{
@@ -87,9 +82,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         mnuVentas = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
         mnuAcceso = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -158,15 +153,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        jMenuItem5.setText("Clientes");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
-            }
-        });
-        mnuVentas.add(jMenuItem5);
-
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_DOWN_MASK));
         jMenuItem6.setText("Ventas generales");
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
@@ -184,6 +170,15 @@ public class FrmPrincipal extends javax.swing.JFrame {
             }
         });
         mnuVentas.add(jMenuItem9);
+
+        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem5.setText("Clientes");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        mnuVentas.add(jMenuItem5);
 
         jMenuItem10.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_DOWN_MASK));
         jMenuItem10.setText("Rutas");

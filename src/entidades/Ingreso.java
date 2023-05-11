@@ -47,7 +47,7 @@ public class Ingreso {
         this.detalles = detalles;
     }
 
-    public Ingreso(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto, double total,int totExistencia, String estado) {
+    public Ingreso(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto, double total, String estado) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;

@@ -24,13 +24,6 @@ public class RutaControl
 	private Ruta obj;
 	private DefaultTableModel modeloTabla;
 	public int registrosMostrados;
-        
-        /*
-        private final PersonaDAO DATOS;
-	private Persona obj;
-	private DefaultTableModel modeloTabla;
-	public int registrosMostrados;
-        */
 	
 	public RutaControl()  
 	{

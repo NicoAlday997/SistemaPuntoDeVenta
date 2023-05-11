@@ -27,7 +27,7 @@ import negocio.ArticuloControl;
 public class FrmSeleccionarArticuloVenta extends javax.swing.JDialog {
 
     private FrmVenta vista;
-    private FrmVentaRutas vistaRutas;
+    //private FrmVentaRutas vistaRutas;
     private final ArticuloControl CONTROL;
     
    
@@ -55,7 +55,7 @@ public class FrmSeleccionarArticuloVenta extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-        this.vistaRutas=frm;
+        //this.vistaRutas=frm;
         this.setTitle("Seleccionar Artículos para la venta");
         this.CONTROL=new ArticuloControl();
         this.paginar();
@@ -289,13 +289,16 @@ public class FrmSeleccionarArticuloVenta extends javax.swing.JDialog {
             String id=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 0));
             String codigo=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 3));
             String nombre=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 4));
-            String precio=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 5)); 
-            String stock=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 6));
-                    
-            this.vista.agregarDetalles(id, codigo, nombre, stock, precio,"0","0");
+            String formato=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 5)); 
+            String precio=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 6)); 
+            String stock=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 7));
+            String piezas=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 8));        
+            this.vista.agregarDetalles(id, codigo, nombre,formato,stock,piezas, precio,"0","0");
         }else{
             this.mensajeError("Debe seleccionar el artículo que desea agregar al detalle");
         }
+        
+      
     }//GEN-LAST:event_btnSeleccionarArticuloActionPerformed
 
 

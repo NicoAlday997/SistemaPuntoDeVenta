@@ -38,10 +38,7 @@ public class CategoriaDAO implements CrudSimpleInterface<Categoria>
 	{
 		List<Categoria> registros=new ArrayList();
                 
-               // Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
 
-               // ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY
-               // Declaración stmt = dbConn.createStatement (ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		
 		try {
 			
@@ -51,7 +48,7 @@ public class CategoriaDAO implements CrudSimpleInterface<Categoria>
 			
 			while(rs.next())
 			{
-				registros.add(new Categoria(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getBoolean(4)));
+				registros.add(new Categoria(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getBoolean(5)));
 			}
 			ps.close();
 			rs.close();
@@ -102,9 +99,10 @@ public class CategoriaDAO implements CrudSimpleInterface<Categoria>
 	
 		resp=false;
 		try {
-			ps=CON.conectar().prepareStatement("INSERT INTO categoria (nombre,descripcion,activo) VALUES (?,?,1)");
+			ps=CON.conectar().prepareStatement("INSERT INTO categoria (nombre,descripcion,comision,activo) VALUES (?,?,?,1)");
 			ps.setString(1, obj.getNombre());
 			ps.setString(2, obj.getDescripcion());
+                        ps.setDouble(3, obj.getComision());
 			if(ps.executeUpdate()>0)
 			{
 				resp=true;
@@ -129,12 +127,12 @@ public class CategoriaDAO implements CrudSimpleInterface<Categoria>
     public boolean actualizar(Categoria obj) {
         resp=false;
         try {
-            //ps=CON.conectar().prepareStatement("UPDATE categoria SET nombre=?, descripcion=? WHERE id=?");
 
-            ps=CON.conectar().prepareStatement("UPDATE categoria SET nombre=?, descripcion=? WHERE id=?");
+            ps=CON.conectar().prepareStatement("UPDATE categoria SET nombre=?, descripcion=?, comision=? WHERE id=?");
             ps.setString(1, obj.getNombre());
             ps.setString(2, obj.getDescripcion());
-            ps.setInt(3, obj.getId());
+            ps.setDouble(3, obj.getComision());
+            ps.setInt(4, obj.getId());
             if (ps.executeUpdate()>0){
                 resp=true;
             }
@@ -238,7 +236,6 @@ public class CategoriaDAO implements CrudSimpleInterface<Categoria>
 		resp=false;
 		
 		try {
-			//ps=CON.conectar().prepareStatement("SELECT nombre FROM categoria WHERE nombre=?");
                         ps=CON.conectar().prepareStatement("SELECT nombre FROM categoria WHERE nombre=?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			ps.setString(1, texto);

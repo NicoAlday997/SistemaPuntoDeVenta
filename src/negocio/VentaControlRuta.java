@@ -15,11 +15,9 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import datos.ArticuloDAO;
 import datos.EmpleadoDAO;
-import datos.PuestoDAO;
 import datos.VentaRutaDAO;
 import entidades.Articulo;
 import entidades.DetalleVentaRuta;
-import entidades.Puesto;
 import entidades.Empleado;
 import entidades.VentaRuta;
 import java.io.File;
@@ -59,11 +57,12 @@ public class VentaControlRuta
 		List<VentaRuta> lista=new ArrayList();
 		lista.addAll(DATOS.listar(texto, totalPorPagina, numPagina));
 		
-		String[] titulos= {"Id","Usuario Id","Usuario","Ruta ID", "Ruta","Numero","Fecha","Total","Efectivo", "Estado"};
+		String[] titulos= {"Id","Usuario Id","Usuario","Ruta ID", "Ruta","Vendedor ID", "Vendedor","Ayudante ID","Ayudante","Serie","Numero","Fecha","Otros Productos",
+                    "Creditos cobrados","Creditos otorgados","Gastos medicos","Refacciones","Combustible","Otros Gastos","Total Liquidar","Utilidad","Efectivo","Estado"};
 		
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 				
-		String[] registro=new String[10];
+		String[] registro=new String[23];
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		this.registrosMostrados=0;
 		
@@ -74,11 +73,24 @@ public class VentaControlRuta
                         registro[2]=item.getUsuarioNombre();
                         registro[3]=Integer.toString(item.getRutaId());
                         registro[4]=item.getRutaNombre();
-                        registro[5]=item.getNumComprobante();
-                        registro[6]=sdf.format(item.getFecha());
-                        registro[7]=Double.toString(item.getTotalLiquidar());
-                        registro[8]=Double.toString(item.getEfectivo());
-                        registro[9]=item.getEstado();
+                        registro[5]=Integer.toString(item.getVendedorId());
+                        registro[6]=item.getVendedorNombre();
+                        registro[7]=Integer.toString(item.getAyudanteId());
+                        registro[8]=item.getAyudanteNombre();
+                        registro[9]=item.getSerieComprobante();
+                        registro[10]=item.getNumComprobante();
+                        registro[11]=sdf.format(item.getFecha());
+                        registro[12]=Double.toString(item.getOtrosProductos());
+                        registro[13]=Double.toString(item.getCreditosCobrados());
+                        registro[14]=Double.toString(item.getCreditosOtorgados());
+                        registro[15]=Double.toString(item.getGastosMedicos());
+                        registro[16]=Double.toString(item.getRefacciones());
+                        registro[17]=Double.toString(item.getCombustible());
+                        registro[18]=Double.toString(item.getOtrosGastos());                     
+                        registro[19]=Double.toString(item.getTotalLiquidar());
+                        registro[20]=Double.toString(item.getTotalUtilidad());
+                        registro[21]=Double.toString(item.getEfectivo());
+                        registro[22]=item.getEstado();
                                             
 			this.modeloTabla.addRow(registro);
 			this.registrosMostrados=this.registrosMostrados+1;
@@ -88,73 +100,34 @@ public class VentaControlRuta
 		return this.modeloTabla;
 	}
         
-        /*
-        En este punto ya habia editado este metodo
-        
-        public DefaultTableModel listar(String texto, int totalPorPagina, int numPagina)
-	{
-		List<VentaRuta> lista=new ArrayList();
-		lista.addAll(DATOS.listar(texto, totalPorPagina, numPagina));
-		
-		String[] titulos= {"Id","Usuario Id","Usuario","Cliente ID", "Cliente","Tipo Comprobante","Serie", "Numero","Fecha", "Impuesto","Total","Utilidad", "Estado"};
-		
-		this.modeloTabla=new DefaultTableModel(null, titulos);
-				
-		String[] registro=new String[13];
-		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
-		this.registrosMostrados=0;
-		
-		for(Venta item:lista)
-		{
-			registro[0]=Integer.toString(item.getId());
-                        registro[1]=Integer.toString(item.getUsuarioId());
-                        registro[2]=item.getUsuarioNombre();
-                        registro[3]=Integer.toString(item.getPersonaId());
-                        registro[4]=item.getPersonaNombre();
-                        registro[5]=item.getTipoComprobante();
-                        registro[6]=item.getSerieComprobante();
-                        registro[7]=item.getNumComprobante();
-                        registro[8]=sdf.format(item.getFecha());
-                        registro[9]=Double.toString(item.getImpuesto());
-                        registro[10]=Double.toString(item.getTotal());
-                        registro[11]=Double.toString(item.getTotUtilidad());
-                        registro[12]=item.getEstado();
-                        
-                        
-                        
-                        
-                        
-			this.modeloTabla.addRow(registro);
-			this.registrosMostrados=this.registrosMostrados+1;
-			
-		}
-		
-		return this.modeloTabla;
-	}
-        */
         
         public DefaultTableModel listarDetalle(int id)
 	{
 		List<DetalleVentaRuta> lista=new ArrayList();
 		lista.addAll(DATOS.listarDetalle(id));
-		
-		String[] titulos= {"ID","CODIGO","ARTICULO","STOCK","CANTIDAD", "PRECIO","DESCUENTO","SUBTOTAL", "UTILIDAD"};
+
+                String [] titulos = {"ID","CODIGO","ARTICULO","FORMATO","S. PTES","S. PZS","PAQUETES","PIEZAS","PRECIO","DESCUENTO","SUBTOTAL","COM X U","COMISION","UTILIDAD"};
 		
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 				
-		String[] registro=new String[9];
+		String[] registro=new String[14];
 		
 		for(DetalleVentaRuta item:lista)
 		{
 			registro[0]=Integer.toString(item.getArticuloId());
                         registro[1]=item.getArticuloCodigo();
                         registro[2]=item.getArticuloNombre();
-                        registro[3]=Integer.toString(item.getArticuloStock());
-                        registro[4]=Integer.toString(item.getCantidad());
-                        registro[5]=Double.toString(item.getPrecio());
-                        registro[6]=Double.toString(item.getDescuento());
-                        registro[7]=Double.toString(item.getSubTotal());
-                        registro[8]=Double.toString(item.getUtilidad());
+                        registro[3]=Integer.toString(item.getArticuloFormato());
+                        registro[4]=Integer.toString(item.getArticuloStock());
+                        registro[5]=Integer.toString(item.getArticuloStockPzs());
+                        registro[6]=Integer.toString(item.getCantidad());
+                        registro[7]=Integer.toString(item.getPiezas());
+                        registro[8]=Double.toString(item.getPrecio());
+                        registro[9]=Double.toString(item.getDescuento());
+                        registro[10]=Double.toString(item.getSubTotal());
+                        registro[11]=Double.toString(item.getComisionA());
+                        registro[12]=Double.toString(item.getComisionD());
+                        registro[13]=Double.toString(item.getUtilidad());
                        
                         this.modeloTabla.addRow(registro);			
 		}
@@ -191,14 +164,13 @@ public class VentaControlRuta
             return items;
             
         }
-      
         
-        public String ultimoSerie(String tipoComprobante) {
-        return this.DATOS.ultimoSerie(tipoComprobante);
+        public String ultimoSerie() {
+        return this.DATOS.ultimoSerie();
         }
         
-        public String ultimoNumero(String tipoComprobante,String serieComprobante) {
-        return this.DATOS.ultimoNumero(tipoComprobante, serieComprobante);
+        public String ultimoNumero(String serieComprobante) {
+        return this.DATOS.ultimoNumero(serieComprobante);
         }
         
         public Articulo obtenerArticuloCodigoVenta(String codigo){
@@ -206,61 +178,57 @@ public class VentaControlRuta
             return art;
         }
 	
-	//public String insertar(int personaId,String tipoComprobante, String serieComprobante,String numComprobante, double impuesto, double total, double totUtilidad, DefaultTableModel modeloDetalles)
-        public String insertar(int rutaId, int vendedorId, int ayudanteId, String numComprobante, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double promocion, double efectivo, double totalLiquidar, DefaultTableModel modeloDetalles)
+        public String insertar(int rutaId, int vendedorId, int ayudanteId, String serieComprobante,String numComprobante, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double otrosGastos, double efectivo, double totalLiquidar, DefaultTableModel modeloDetalles)
 	{
-		if(DATOS.existe("nada",numComprobante))
+            System.out.println("Empezando");
+            
+		if(DATOS.existe(serieComprobante,numComprobante))
 		{
 			return "El registro ya existe";
 			
 		}else
 		{
+                    System.out.println("antes set");
                     obj.setUsuarioId(Variables.usuarioId);
                     obj.setRutaId(rutaId);
                     obj.setVendedorId(vendedorId);
                     obj.setAyudanteId(ayudanteId);
+                    obj.setSerieComprobante(serieComprobante);
                     obj.setNumComprobante(numComprobante);
                     obj.setOtrosProductos(otrosProductos);
-                     System.out.println("c cobrados: " + creditosCobrados);
-
                     obj.setCreditosCobrados(creditosCobrados);
                     obj.setCreditosOtorgados(creditosOtorgados);
                     obj.setGastosMedicos(gastosMedicos);
                     obj.setRefacciones(refacciones);
                     obj.setCombustible(combustible);
-                    obj.setPromocion(promocion);
+                    obj.setOtrosGastos(otrosGastos);
                     obj.setEfectivo(efectivo);
                     obj.setTotalLiquidar(totalLiquidar);
-                    System.out.print("seteado: " + totalLiquidar);
-                   // obj.setTotUtilidad(totUtilidad);
+
                     
                     List<DetalleVentaRuta> detalles=new ArrayList();
                     int articuloId;
                     int cantidad;
                     double precio;
                     double descuento;
-                    //double utilidad;
-                    
+                    int piezas;
+                    double comision;
+
                     for(int i=0; i<modeloDetalles.getRowCount(); i++){
+        
                         articuloId=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 0)));
-                        cantidad=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 4)));   
-                        precio=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 5)));
-                        descuento=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 6)));
-                        detalles.add(new DetalleVentaRuta(articuloId,cantidad,precio, descuento, 0));
+                        cantidad=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 6))); 
+                        piezas=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 7))); 
+                        precio=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 8)));
+                        descuento=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 9)));
+                        comision=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 12)));
+                        
+                        detalles.add(new DetalleVentaRuta(articuloId,cantidad,piezas,precio, descuento, 0, comision));
                         
                     }
-                    /*for(int i=0; i<modeloDetalles.getRowCount(); i++){
-                        articuloId=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 0)));
-                        if(String.valueOf(modeloDetalles.getValueAt(i, 4))==null || String.valueOf(modeloDetalles.getValueAt(i, 4)).equals(""))cantidad=0;
-                                else cantidad=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 4)));   
-                        //cantidad=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 4)));
-                        precio=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 5)));
-                        descuento=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 6)));
-                        detalles.add(new DetalleVentaRuta(articuloId,cantidad,precio, descuento, 0));
-                        
-                    }*/
+
                     obj.setDetalles(detalles);
-                    
+                                  
 			if(DATOS.insertar(obj))
 			{
 				return "OK";
@@ -272,53 +240,6 @@ public class VentaControlRuta
 		}
 	}
         
-        /*
-        public String insertar(int personaId,String tipoComprobante, String serieComprobante,String numComprobante, double impuesto, double total, DefaultTableModel modeloDetalles)
-	{
-		if(DATOS.existe(serieComprobante, numComprobante))
-		{
-			return "El registro ya existe";
-			
-		}else
-		{
-                    obj.setUsuarioId(Variables.usuarioId);
-                    obj.setPersonaId(personaId);
-                    obj.setTipoComprobante(tipoComprobante);
-                    obj.setSerieComprobante(serieComprobante);
-                    obj.setNumComprobante(numComprobante);
-                    obj.setImpuesto(impuesto);
-                    obj.setTotal(total);
-                   // obj.setTotUtilidad(totUtilidad);
-                    
-                    List<DetalleVenta> detalles=new ArrayList();
-                    int articuloId;
-                    int cantidad;
-                    double precio;
-                    double descuento;
-                    //double utilidad;
-                    
-                    for(int i=0; i<modeloDetalles.getRowCount(); i++){
-                        articuloId=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 0)));
-                        cantidad=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 4)));
-                        precio=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 5)));
-                        descuento=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 6)));
-                        //utilidad=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 8)));
-                        detalles.add(new DetalleVenta(articuloId,cantidad,precio, descuento, 0));
-                    }
-                    obj.setDetalles(detalles);
-                    
-			if(DATOS.insertar(obj))
-			{
-				return "OK";
-			}else
-			{
-				return "Error en el registro.";
-			}
-			
-		}
-	}*/
-
-	
 	public String anular(int id)
 	{
 		if(DATOS.anular(id))
@@ -340,10 +261,10 @@ public class VentaControlRuta
 		return this.registrosMostrados;
 	}
         
-        public void reporteComprobante(String idventa)
+        public void reporteVentaRuta(String idVentaRuta)
         {
             Map p=new HashMap();
-            p.put("idventa", idventa);
+            p.put("idVentaRuta", idVentaRuta);
             JasperReport report;
             JasperPrint print;
             
@@ -351,10 +272,10 @@ public class VentaControlRuta
             
             try {
                 report=JasperCompileManager.compileReport(new File("").getAbsolutePath()+
-                        "/src/reportes/RptComprobante.jrxml");
+                        "/src/reportes/RptVentaRuta.jrxml");
                 print=JasperFillManager.fillReport(report, p, cnn.conectar());
                 JasperViewer view=new JasperViewer(print,false);
-                view.setTitle("Reporte de articulos");
+                view.setTitle("Reporte de Liquidación");
                 view.setVisible(true);
             } catch (JRException e) {
                 e.getMessage();
@@ -365,10 +286,10 @@ public class VentaControlRuta
         List<VentaRuta> lista=new ArrayList();
         lista.addAll(DATOS.consultaFechas(fechaInicio,fechaFin));
         
-        String[] titulos={"Id","Usuario ID","Usuario","Ruta ID","Ruta","Número","Fecha","Total","Efectivo","Estado"};
+        String[] titulos={"Id","Usuario ID","Usuario","Ruta ID","Ruta","Número","Fecha","Total","Utilidad","Efectivo","Estado"};
         this.modeloTabla=new DefaultTableModel(null,titulos);        
         
-        String[] registro = new String[10];
+        String[] registro = new String[11];
         SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
         
         this.registrosMostrados=0;
@@ -381,8 +302,9 @@ public class VentaControlRuta
             registro[5]=item.getNumComprobante();
             registro[6]=sdf.format(item.getFecha());
             registro[7]=Double.toString(item.getTotalLiquidar());
-            registro[8]=Double.toString(item.getEfectivo());
-            registro[9]=item.getEstado();
+            registro[8]=Double.toString(item.getTotalUtilidad());
+            registro[9]=Double.toString(item.getEfectivo());
+            registro[10]=item.getEstado();
             
             this.modeloTabla.addRow(registro);
             this.registrosMostrados=this.registrosMostrados+1;

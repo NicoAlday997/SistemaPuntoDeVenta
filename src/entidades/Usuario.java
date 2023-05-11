@@ -13,8 +13,6 @@ public class Usuario {
     private int rolId;
     private String rolNombre;
     private String nombre;
-    private String tipoDocumento;
-    private String numDocumento;
     private String direccion;
     private String telefono;
     private String email;
@@ -24,13 +22,11 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int id, int rolId, String rolNombre, String nombre, String tipoDocumento, String numDocumento, String direccion, String telefono, String email, boolean activo) {
+    public Usuario(int id, int rolId, String rolNombre, String nombre, String direccion, String telefono, String email, boolean activo) {
         this.id = id;
         this.rolId = rolId;
         this.rolNombre = rolNombre;
         this.nombre = nombre;
-        this.tipoDocumento = tipoDocumento;
-        this.numDocumento = numDocumento;
         this.direccion = direccion;
         this.telefono = telefono;
         this.email = email;
@@ -39,13 +35,11 @@ public class Usuario {
     
     
 
-    public Usuario(int id, int rolId, String rolNombre, String nombre, String tipoDocumento, String numDocumento, String direccion, String telefono, String email, String clave, boolean activo) {
+    public Usuario(int id, int rolId, String rolNombre, String nombre, String direccion, String telefono, String email, String clave, boolean activo) {
         this.id = id;
         this.rolId = rolId;
         this.rolNombre = rolNombre;
         this.nombre = nombre;
-        this.tipoDocumento = tipoDocumento;
-        this.numDocumento = numDocumento;
         this.direccion = direccion;
         this.telefono = telefono;
         this.email = email;
@@ -83,22 +77,6 @@ public class Usuario {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getTipoDocumento() {
-        return tipoDocumento;
-    }
-
-    public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
-    }
-
-    public String getNumDocumento() {
-        return numDocumento;
-    }
-
-    public void setNumDocumento(String numDocumento) {
-        this.numDocumento = numDocumento;
     }
 
     public String getDireccion() {

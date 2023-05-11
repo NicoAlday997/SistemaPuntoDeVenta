@@ -38,10 +38,6 @@ public class RutaDAO implements CrudPaginadoInterface<Ruta>
 	{
 		List<Ruta> registros=new ArrayList();
                 
-               // Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
-
-               // ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY
-               // Declaración stmt = dbConn.createStatement (ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		
 		try {
                     ps=CON.conectar().prepareStatement("SELECT r.id,  r.nombre, r.cobertura, r.activo FROM ruta r WHERE r.nombre LIKE ? ORDER BY r.id ASC LIMIT ?,?");
@@ -71,11 +67,7 @@ public class RutaDAO implements CrudPaginadoInterface<Ruta>
         public List<Ruta> listarTipo(String texto,int totalPorPagina, int numPagina, String tipoPersona) 
 	{
 		List<Ruta> registros=new ArrayList();
-                
-               // Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
 
-               // ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY
-               // Declaración stmt = dbConn.createStatement (ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		
 		try {
                     ps=CON.conectar().prepareStatement("SELECT p.id, p.tipo_persona, p.nombre, p.tipo_documento,p.num_documento, p.direccion, p.telefono, p.email, p.activo FROM persona p WHERE p.nombre LIKE ? AND tipo_persona=? ORDER BY p.id ASC LIMIT ?,?");
@@ -133,35 +125,6 @@ public class RutaDAO implements CrudPaginadoInterface<Ruta>
 		return resp;
 	}
 
-        /*
-	@Override
-	public boolean actualizar(Categoria obj) {
-
-		resp=false;
-		try {
-			ps=CON.conectar().prepareStatement("UPDATE categoria SET nombre=?, descripcion=? WHERE id=?");
-			ps.setString(1, obj.getNombre());
-			ps.setString(2, obj.getDescripcion());
-			ps.setInt(3, obj.getId());
-			if(ps.executeUpdate()>0)
-			{
-				resp=true;
-			}
-			
-			ps.close();
-			
-		} catch (SQLException e) {
-
-			JOptionPane.showMessageDialog(null, e.getMessage());
-		}finally{
-
-			ps=null;
-			CON.desconectar();
-		}
-		
-		return resp;
-	}
-*/
         
        @Override
     public boolean actualizar(Ruta obj) {
@@ -276,7 +239,6 @@ public class RutaDAO implements CrudPaginadoInterface<Ruta>
 		resp=false;
 		
 		try {
-			//ps=CON.conectar().prepareStatement("SELECT nombre FROM categoria WHERE nombre=?");
                         ps=CON.conectar().prepareStatement("SELECT nombre FROM ruta WHERE nombre=?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			ps.setString(1, texto);

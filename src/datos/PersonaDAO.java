@@ -38,13 +38,9 @@ public class PersonaDAO implements CrudPaginadoInterface<Persona>
 	{
 		List<Persona> registros=new ArrayList();
                 
-               // Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
-
-               // ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY
-               // Declaración stmt = dbConn.createStatement (ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		
 		try {
-                    ps=CON.conectar().prepareStatement("SELECT p.id, p.tipo_persona, p.nombre, p.tipo_documento,p.num_documento, p.direccion, p.telefono, p.email, p.activo FROM persona p WHERE p.nombre LIKE ? ORDER BY p.id ASC LIMIT ?,?");
+                    ps=CON.conectar().prepareStatement("SELECT p.id, p.tipo_persona, p.nombre, p.direccion, p.telefono, p.email, p.activo FROM persona p WHERE p.nombre LIKE ? ORDER BY p.id ASC LIMIT ?,?");
 			ps.setString(1,"%" + texto +"%");
                         ps.setInt(2, (numPagina-1)*totalPorPagina);
                         ps.setInt(3, totalPorPagina);
@@ -52,7 +48,7 @@ public class PersonaDAO implements CrudPaginadoInterface<Persona>
 			
 			while(rs.next())
 			{
-				registros.add(new Persona(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6), rs.getString(7),rs.getString(8), rs.getBoolean(9)));
+				registros.add(new Persona(rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getString(5),rs.getString(6), rs.getBoolean(7)));
 			}
 			ps.close();
 			rs.close();
@@ -71,14 +67,10 @@ public class PersonaDAO implements CrudPaginadoInterface<Persona>
         public List<Persona> listarTipo(String texto,int totalPorPagina, int numPagina, String tipoPersona) 
 	{
 		List<Persona> registros=new ArrayList();
-                
-               // Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
 
-               // ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY
-               // Declaración stmt = dbConn.createStatement (ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		
 		try {
-                    ps=CON.conectar().prepareStatement("SELECT p.id, p.tipo_persona, p.nombre, p.tipo_documento,p.num_documento, p.direccion, p.telefono, p.email, p.activo FROM persona p WHERE p.nombre LIKE ? AND tipo_persona=? ORDER BY p.id ASC LIMIT ?,?");
+                    ps=CON.conectar().prepareStatement("SELECT p.id, p.tipo_persona, p.nombre, p.direccion, p.telefono, p.email, p.activo FROM persona p WHERE p.nombre LIKE ? AND tipo_persona=? ORDER BY p.id ASC LIMIT ?,?");
 			ps.setString(1,"%" + texto +"%");
                         ps.setString(2,tipoPersona);
                         ps.setInt(3, (numPagina-1)*totalPorPagina);
@@ -87,7 +79,7 @@ public class PersonaDAO implements CrudPaginadoInterface<Persona>
 			
 			while(rs.next())
 			{
-				registros.add(new Persona(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6), rs.getString(7),rs.getString(8), rs.getBoolean(9)));
+				registros.add(new Persona(rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getString(5),rs.getString(6), rs.getBoolean(7)));
 			}
 			ps.close();
 			rs.close();
@@ -110,14 +102,12 @@ public class PersonaDAO implements CrudPaginadoInterface<Persona>
 	
 		resp=false;
 		try {
-			ps=CON.conectar().prepareStatement("INSERT INTO persona (tipo_persona,nombre,tipo_documento, num_documento,direccion, telefono, email, activo) VALUES (?,?,?,?,?,?,?,1)");
+			ps=CON.conectar().prepareStatement("INSERT INTO persona (tipo_persona,nombre,direccion, telefono, email, activo) VALUES (?,?,?,?,?,1)");
 			ps.setString(1, obj.getTipoPersona());
                         ps.setString(2,obj.getNombre());
-                        ps.setString(3, obj.getTipoDocumento());
-                        ps.setString(4, obj.getNumDocumento());
-                        ps.setString(5, obj.getDireccion());
-			ps.setString(6, obj.getTelefono());
-                        ps.setString(7, obj.getEmail());
+                        ps.setString(3, obj.getDireccion());
+			ps.setString(4, obj.getTelefono());
+                        ps.setString(5, obj.getEmail());
 			if(ps.executeUpdate()>0)
 			{
 				resp=true;
@@ -136,52 +126,20 @@ public class PersonaDAO implements CrudPaginadoInterface<Persona>
 		
 		return resp;
 	}
-
-        /*
-	@Override
-	public boolean actualizar(Categoria obj) {
-
-		resp=false;
-		try {
-			ps=CON.conectar().prepareStatement("UPDATE categoria SET nombre=?, descripcion=? WHERE id=?");
-			ps.setString(1, obj.getNombre());
-			ps.setString(2, obj.getDescripcion());
-			ps.setInt(3, obj.getId());
-			if(ps.executeUpdate()>0)
-			{
-				resp=true;
-			}
-			
-			ps.close();
-			
-		} catch (SQLException e) {
-
-			JOptionPane.showMessageDialog(null, e.getMessage());
-		}finally{
-
-			ps=null;
-			CON.desconectar();
-		}
-		
-		return resp;
-	}
-*/
+        
         
         @Override
     public boolean actualizar(Persona obj) {
         resp=false;
         try {
-            //ps=CON.conectar().prepareStatement("UPDATE categoria SET nombre=?, descripcion=? WHERE id=?");
 
-            ps = CON.conectar().prepareStatement("UPDATE persona SET tipo_persona=?, nombre=?, tipo_documento=?, num_documento=?, direccion=?, telefono=?, email=? WHERE id=?");
+            ps = CON.conectar().prepareStatement("UPDATE persona SET tipo_persona=?, nombre=?, direccion=?, telefono=?, email=? WHERE id=?");
             ps.setString(1, obj.getTipoPersona());
             ps.setString(2, obj.getNombre());
-            ps.setString(3, obj.getTipoDocumento());
-            ps.setString(4, obj.getNumDocumento());
-            ps.setString(5, obj.getDireccion());
-            ps.setString(6, obj.getTelefono());
-            ps.setString(7, obj.getEmail());
-            ps.setInt(8, obj.getId());
+            ps.setString(3, obj.getDireccion());
+            ps.setString(4, obj.getTelefono());
+            ps.setString(5, obj.getEmail());
+            ps.setInt(6, obj.getId());
             if (ps.executeUpdate()>0){
                 resp=true;
             }
@@ -285,7 +243,6 @@ public class PersonaDAO implements CrudPaginadoInterface<Persona>
 		resp=false;
 		
 		try {
-			//ps=CON.conectar().prepareStatement("SELECT nombre FROM categoria WHERE nombre=?");
                         ps=CON.conectar().prepareStatement("SELECT nombre FROM persona WHERE nombre=?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			ps.setString(1, texto);

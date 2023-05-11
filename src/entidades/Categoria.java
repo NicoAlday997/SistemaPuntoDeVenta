@@ -15,9 +15,9 @@ public class Categoria {
 	private int id;
 	private String nombre;
 	private String descripcion;
+        private double comision;
 	private boolean activo;
 	
-	//Constructores
 	
 	public Categoria()
 	{
@@ -31,14 +31,14 @@ public class Categoria {
 
         
         
-	public Categoria(int id, String nombre, String descripcion, boolean activo) {
+	public Categoria(int id, String nombre, String descripcion, double comision, boolean activo) {
 		this.id = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
+                this.comision = comision;
 		this.activo = activo;
 	}
 	
-	//Setter y getter
 
 
 	public int getId() {
@@ -63,6 +63,14 @@ public class Categoria {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+        
+        public double getComision() {
+		return comision;
+	}
+
+	public void setComision(double comision) {
+		this.comision = comision;
 	}
 
 	public boolean isActivo() {

@@ -42,14 +42,13 @@ public class UsuarioControl
 		List<Usuario> lista=new ArrayList();
 		lista.addAll(DATOS.listar(texto, totalPorPagina, numPagina));
 		
-		String[] titulos= {"Id","Rol ID","Rol","Usuario","Documento", "# Documento", "Dirección", "Telefono","Email","Clave", "Estado"};
-		//String[] titulos= {"Holaaaa","RolID","Usuario","Documento", "# Documento", "Dirección", "Telefono","Email","Clave", "Estado"};
+		String[] titulos= {"Id","Rol ID","Rol","Usuario", "Dirección", "Telefono","Email","Clave", "Estado"};
 
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 		
 		String estado;
 		
-		String[] registro=new String[11];
+		String[] registro=new String[9];
 		
 		this.registrosMostrados=0;
 		
@@ -67,13 +66,11 @@ public class UsuarioControl
                         registro[1]=Integer.toString(item.getRolId());
                         registro[2]=item.getRolNombre();
                         registro[3]=item.getNombre();
-			registro[4]=item.getTipoDocumento();
-                        registro[5]=item.getNumDocumento();
-                        registro[6]=item.getDireccion();              
-			registro[7]=item.getTelefono();
-                        registro[8]=item.getEmail();
-                        registro[9]=item.getClave();
-			registro[10]=estado;
+                        registro[4]=item.getDireccion();              
+			registro[5]=item.getTelefono();
+                        registro[6]=item.getEmail();
+                        registro[7]=item.getClave();
+			registro[8]=estado;
 			this.modeloTabla.addRow(registro);
 			this.registrosMostrados=this.registrosMostrados+1;
 			
@@ -141,7 +138,7 @@ public class UsuarioControl
             
         }
 	
-	public String insertar(int RolId, String nombre, String tipoDocumento, String numDocumento, String direccion, String telefono,String email, String clave )
+	public String insertar(int RolId, String nombre, String direccion, String telefono,String email, String clave )
 	{
 		if(DATOS.existe(email))
 		{
@@ -151,8 +148,6 @@ public class UsuarioControl
 		{
                     obj.setRolId(RolId);
                     obj.setNombre(nombre);
-                    obj.setTipoDocumento(tipoDocumento);
-                    obj.setNumDocumento(numDocumento);
                     obj.setDireccion(direccion);
                     obj.setTelefono(telefono);
                     obj.setEmail(email);
@@ -168,15 +163,13 @@ public class UsuarioControl
 		}
 	}
 	
-	public String actualizar(int id, int RolId, String nombre, String tipoDocumento, String numDocumento, String direccion, String telefono,String email,String emailAnt, String clave)
+	public String actualizar(int id, int RolId, String nombre, String direccion, String telefono,String email,String emailAnt, String clave)
 	{
 		if(email.equals(emailAnt))
 		{
                     obj.setId(id);
                     obj.setRolId(RolId);
                     obj.setNombre(nombre);
-                    obj.setTipoDocumento(tipoDocumento);
-                    obj.setNumDocumento(numDocumento);
                     obj.setDireccion(direccion);
                     obj.setTelefono(telefono);
                     obj.setEmail(email);
@@ -210,8 +203,6 @@ public class UsuarioControl
 		            obj.setId(id);
                             obj.setRolId(RolId);
                             obj.setNombre(nombre);
-                            obj.setTipoDocumento(tipoDocumento);
-                            obj.setNumDocumento(numDocumento);
                             obj.setDireccion(direccion);
                             obj.setTelefono(telefono);
                             obj.setEmail(email);

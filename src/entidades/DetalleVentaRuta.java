@@ -14,18 +14,22 @@ public class DetalleVentaRuta {
     private int articuloId;
     private String articuloCodigo;
     private String articuloNombre;
+    private int articuloFormato;
     private int articuloStock;
+     private int articuloStockPzs;
     private int cantidad;
+    private int piezas;
     private double precio;
     private double descuento;
     private double subTotal;
     private double utilidad;
+    private double comisionA;
+    private double comisionD;
 
     public DetalleVentaRuta() {
     }
 
-    //Se agrego utilidad a 2 constructores
-    public DetalleVentaRuta(int id, int ventaRutaId, int articuloId, String articuloCodigo, String articuloNombre, int articuloStock, int cantidad, double precio, double descuento, double subTotal, double utilidad) {
+    public DetalleVentaRuta(int id, int ventaRutaId, int articuloId, String articuloCodigo, String articuloNombre, int articuloStock, int cantidad, int piezas, double precio, double descuento, double subTotal, double utilidad, double comisionD) {
         this.id = id;
         this.ventaRutaId = ventaRutaId;
         this.articuloId = articuloId;
@@ -33,30 +37,39 @@ public class DetalleVentaRuta {
         this.articuloNombre = articuloNombre;
         this.articuloStock = articuloStock;
         this.cantidad = cantidad;
+        this.piezas = piezas;
         this.precio = precio;
         this.descuento = descuento;
         this.subTotal = subTotal;
         this.utilidad=utilidad;
+        this.comisionD = comisionD;
     }
 
-    public DetalleVentaRuta(int articuloId, String articuloCodigo, String articuloNombre, int articuloStock, int cantidad, double precio, double descuento, double subTotal, double utilidad) {
+    public DetalleVentaRuta(int articuloId, String articuloCodigo, String articuloNombre, int articuloFormato,int articuloStock, int articuloStockPzs, int cantidad, int piezas, double precio, double descuento, double subTotal, double comisionA,double comisionD,double utilidad) {
         this.articuloId = articuloId;
         this.articuloCodigo = articuloCodigo;
         this.articuloNombre = articuloNombre;
+        this.articuloFormato = articuloFormato;
         this.articuloStock = articuloStock;
+        this.articuloStockPzs = articuloStockPzs;
         this.cantidad = cantidad;
+        this.piezas = piezas;
         this.precio = precio;
         this.descuento = descuento;
         this.subTotal = subTotal;
+        this.comisionA = comisionA;
+        this.comisionD = comisionD;
         this.utilidad=utilidad;
     }
 
-    public DetalleVentaRuta(int articuloId, int cantidad, double precio, double descuento, double utilidad) {
+    public DetalleVentaRuta(int articuloId, int cantidad, int piezas, double precio, double descuento, double utilidad, double comisionD) {
         this.articuloId = articuloId;
         this.cantidad = cantidad;
+        this.piezas = piezas;
         this.precio = precio;
         this.descuento = descuento;
         this.utilidad=utilidad;
+        this.comisionD = comisionD;
     }
     
     
@@ -101,13 +114,33 @@ public class DetalleVentaRuta {
         this.articuloNombre = articuloNombre;
     }
 
-    public int getArticuloStock() {
+
+    public int getArticuloFormato() {
+        return articuloFormato;
+    }
+
+    public void setArticuloFormato(int articuloFormato) {
+        this.articuloFormato = articuloFormato;
+    }
+    
+     public int getArticuloStock() {
         return articuloStock;
     }
+    
 
     public void setArticuloStock(int articuloStock) {
         this.articuloStock = articuloStock;
     }
+
+    public int getArticuloStockPzs() {
+        return articuloStockPzs;
+    }
+
+    public void setArticuloStockPzs(int articuloStockPzs) {
+        this.articuloStockPzs = articuloStockPzs;
+    }
+    
+    
 
     public int getCantidad() {
         return cantidad;
@@ -116,6 +149,16 @@ public class DetalleVentaRuta {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+
+    public int getPiezas() {
+        return piezas;
+    }
+
+    public void setPiezas(int piezas) {
+        this.piezas = piezas;
+    }
+    
+    
 
     public double getPrecio() {
         return precio;
@@ -148,6 +191,26 @@ public class DetalleVentaRuta {
     public void setUtilidad(double utilidad) {
         this.utilidad = utilidad;
     }
+
+    public double getComisionA() {
+        return comisionA;
+    }
+
+    public void setComisionA(double comisionA) {
+        this.comisionA = comisionA;
+    }
+
+    public double getComisionD() {
+        return comisionD;
+    }
+
+    public void setComisionD(double comisionD) {
+        this.comisionD = comisionD;
+    }
+    
+    
+    
+    
     
     
 }

@@ -48,29 +48,6 @@ public class FrmSeleccionarRutaVenta extends javax.swing.JDialog {
         this.setVisible(true);
     }
     
-    /*
-    public FrmSeleccionarRutaVenta(java.awt.Frame parent,FrmVentaRutas frm, boolean modal) {
-        super(parent, modal);
-        initComponents();
-        this.setLocationRelativeTo(null);
-        //this.vista=frm;
-        this.vista=frm;
-        this.setTitle("Seleccione un cliente para la venta");
-        //nada
-        
-        
-        this.CONTROL=new PersonaControl();
-        this.paginar();
-        this.listar("",false);
-        this.primeraCarga=false;
-        tabGeneral.setEnabledAt(1,false );
-        this.accion="guardar";
-        txtId.setVisible(false);
-        
-        this.setVisible(true);
-    }
-    */
-    
     
     private void paginar()
     {
@@ -434,14 +411,10 @@ public class FrmSeleccionarRutaVenta extends javax.swing.JDialog {
         if(tablaListado.getSelectedRowCount()==1)
         {
             String id= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 0));
-            //String tipoPersona=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 1));
             String nombre=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 1));
             this.nombreAnt= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 1));
             String cobertura= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 2));
-          /*  String numDocumento = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 4));
-            String direccion= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 5));
-            String telefono= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 6));
-            String email= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 7));*/
+  
 
             txtId.setText(id);
             txtNombre.setText(nombre);

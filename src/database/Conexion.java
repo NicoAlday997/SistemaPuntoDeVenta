@@ -15,13 +15,12 @@ import javax.swing.JOptionPane;
 
 
 public class Conexion {
-
-	//private final String DRIVER="com.mysql.jdbc.Driver";
         
         private final String DRIVER="com.mysql.cj.jdbc.Driver";
 
 	private final String URL="jdbc:mysql://localhost:3306/";
-	private final String DB="dbsistema";
+	private final String DB="prueba_test_1";
+        //private final String DB="dbsistema";
 	private final String USER="root";
 	private final String PASSWORD="1234";
 	
@@ -40,7 +39,6 @@ public class Conexion {
 			Class.forName(DRIVER);
 			this.cadena=DriverManager.getConnection(URL+DB,USER,PASSWORD);
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO: handle exception
 			
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			System.exit(0);
@@ -55,7 +53,6 @@ public class Conexion {
 			this.cadena.close();
 			
 		} catch (SQLException e) {
-			// TODO: handle exception
 			JOptionPane.showMessageDialog(null, e.getMessage());
 
 		}

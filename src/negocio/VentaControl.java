@@ -75,11 +75,7 @@ public class VentaControl
                         registro[10]=Double.toString(item.getTotal());
                         registro[11]=Double.toString(item.getTotUtilidad());
                         registro[12]=item.getEstado();
-                        
-                        
-                        
-                        
-                        
+                                            
 			this.modeloTabla.addRow(registro);
 			this.registrosMostrados=this.registrosMostrados+1;
 			
@@ -93,23 +89,26 @@ public class VentaControl
 		List<DetalleVenta> lista=new ArrayList();
 		lista.addAll(DATOS.listarDetalle(id));
 		
-		String[] titulos= {"ID","CODIGO","ARTICULO","STOCK","CANTIDAD", "PRECIO","DESCUENTO","SUBTOTAL", "UTILIDAD"};
-		
+		//String[] titulos= {"ID","CODIGO","ARTICULO","STOCK","CANTIDAD", "PIEZAS", "PRECIO","DESCUENTO","SUBTOTAL", "UTILIDAD"};
+		String[] titulos= {"ID","CODIGO","ARTICULO","FORMATO","STOCK","S. PZS","CANTIDAD","PIEZAS","PRECIO","DESCUENTO","SUBTOTAL","UTILIDAD"};
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 				
-		String[] registro=new String[9];
+		String[] registro=new String[12];
 		
 		for(DetalleVenta item:lista)
 		{
-			registro[0]=Integer.toString(item.getArticuloId());
-                        registro[1]=item.getArticuloCodigo();
-                        registro[2]=item.getArticuloNombre();
-                        registro[3]=Integer.toString(item.getArticuloStock());
-                        registro[4]=Integer.toString(item.getCantidad());
-                        registro[5]=Double.toString(item.getPrecio());
-                        registro[6]=Double.toString(item.getDescuento());
-                        registro[7]=Double.toString(item.getSubTotal());
-                        registro[8]=Double.toString(item.getUtilidad());
+			registro[0]=Integer.toString(item.getArticuloId());//ID
+                        registro[1]=item.getArticuloCodigo();//CODIGO
+                        registro[2]=item.getArticuloNombre();//NOMBRE ARTICULO
+                        registro[3]=Integer.toString(item.getArticuloFormato());//FORMATO
+                        registro[4]=Integer.toString(item.getArticuloStock());//STOCK
+                        registro[5]=Integer.toString(item.getArticuloStockPzs());//S.PZS
+                        registro[6]=Integer.toString(item.getCantidad());//CANTIDAD
+                        registro[7]=Integer.toString(item.getPiezas());//PIEZAS
+                        registro[8]=Double.toString(item.getPrecio());//PRECIO
+                        registro[9]=Double.toString(item.getDescuento());//DESCUENTO
+                        registro[10]=Double.toString(item.getSubTotal());//SUBTOTAL
+                        registro[11]=Double.toString(item.getUtilidad());//UTILIDAD
                        
                         this.modeloTabla.addRow(registro);			
 		}
@@ -130,7 +129,6 @@ public class VentaControl
             return art;
         }
 	
-	//public String insertar(int personaId,String tipoComprobante, String serieComprobante,String numComprobante, double impuesto, double total, double totUtilidad, DefaultTableModel modeloDetalles)
         public String insertar(int personaId,String tipoComprobante, String serieComprobante,String numComprobante, double impuesto, double total, DefaultTableModel modeloDetalles)
 
 	{
@@ -147,22 +145,22 @@ public class VentaControl
                     obj.setNumComprobante(numComprobante);
                     obj.setImpuesto(impuesto);
                     obj.setTotal(total);
-                   // obj.setTotUtilidad(totUtilidad);
                     
                     List<DetalleVenta> detalles=new ArrayList();
                     int articuloId;
                     int cantidad;
                     double precio;
                     double descuento;
-                    //double utilidad;
-                    
+                    int piezas;
+
                     for(int i=0; i<modeloDetalles.getRowCount(); i++){
                         articuloId=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 0)));
-                        cantidad=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 4)));
-                        precio=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 5)));
-                        descuento=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 6)));
-                        //utilidad=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 8)));
-                        detalles.add(new DetalleVenta(articuloId,cantidad,precio, descuento, 0));
+                        cantidad=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 6)));
+                        piezas=Integer.parseInt(String.valueOf(modeloDetalles.getValueAt(i, 7)));
+                        precio=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 8)));
+                        descuento=Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 9)));
+                       
+                        detalles.add(new DetalleVenta(articuloId,cantidad, piezas, precio, descuento, 0));
                     }
                     obj.setDetalles(detalles);
                     

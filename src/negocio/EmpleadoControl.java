@@ -30,7 +30,6 @@ public class EmpleadoControl
 	private Empleado obj;
 	private DefaultTableModel modeloTabla;
 	public int registrosMostrados;
-       // public SimpleDateFormat sdf;
 	
 	public EmpleadoControl()  
 	{
@@ -38,7 +37,6 @@ public class EmpleadoControl
                 this.DATOSPUESTO=new PuestoDAO();
 		this.obj=new Empleado();
 		this.registrosMostrados=0;
-                //sdf=new SimpleDateFormat("dd/MM/yyyy");
 	}
 	
 	public DefaultTableModel listar(String texto, int totalPorPagina, int numPagina)
@@ -47,7 +45,6 @@ public class EmpleadoControl
 		lista.addAll(DATOS.listar(texto, totalPorPagina, numPagina));
 		
 		String[] titulos= {"Id","Puesto ID","Puesto","Empleado","Apellidos", "Sexo", "Fecha entrada", "Fecha nacimiento","direccion","telefono", "Estado"};
-		//String[] titulos= {"Holaaaa","RolID","Usuario","Documento", "# Documento", "Dirección", "Telefono","Email","Clave", "Estado"};
 
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 		
@@ -75,8 +72,18 @@ public class EmpleadoControl
                         registro[3]=item.getNombre();
 			registro[4]=item.getApellidos();
                         registro[5]=item.getSexo();
-                        registro[6]=sdf.format(item.getFecha_entrada());              
-			registro[7]=sdf.format(item.getFecha_nacimiento());
+                        
+                        if(item.getFecha_entrada()!=null){
+                            registro[6]=sdf.format(item.getFecha_entrada());              
+                        }else{
+                            registro[6]=null;
+                        }
+                        
+                        if(item.getFecha_nacimiento()!=null){
+                            registro[7]=sdf.format(item.getFecha_nacimiento());
+                        }else{
+                            registro[7]=null;
+                        }
                         
                         
                         registro[8]=item.getDireccion();
@@ -90,75 +97,6 @@ public class EmpleadoControl
 		return this.modeloTabla;
 	}
         
-        /*
-        public DefaultTableModel listar(String texto, int totalPorPagina, int numPagina)
-	{
-		List<Empleado> lista=new ArrayList();
-		lista.addAll(DATOS.listar(texto, totalPorPagina, numPagina));
-		
-		String[] titulos= {"Id","Rol ID","Rol","Usuario","Documento", "# Documento", "Dirección", "Telefono","Email","Clave", "Estado"};
-		//String[] titulos= {"Holaaaa","RolID","Usuario","Documento", "# Documento", "Dirección", "Telefono","Email","Clave", "Estado"};
-
-		this.modeloTabla=new DefaultTableModel(null, titulos);
-		
-		String estado;
-		
-		String[] registro=new String[11];
-		
-		this.registrosMostrados=0;
-		
-		for(Empleado item:lista)
-		{
-			if(item.isActivo())
-			{
-				estado="Activo";
-			}else
-			{
-				estado="Inactivo";
-			}
-			
-			registro[0]=Integer.toString(item.getId());
-                        registro[1]=Integer.toString(item.getRolId());
-                        registro[2]=item.getRolNombre();
-                        registro[3]=item.getNombre();
-			registro[4]=item.getTipoDocumento();
-                        registro[5]=item.getNumDocumento();
-                        registro[6]=item.getDireccion();              
-			registro[7]=item.getTelefono();
-                        registro[8]=item.getEmail();
-                        registro[9]=item.getClave();
-			registro[10]=estado;
-			this.modeloTabla.addRow(registro);
-			this.registrosMostrados=this.registrosMostrados+1;
-			
-		}
-		
-		return this.modeloTabla;
-	}
-        */
-        
-        /*public String login(String email, String clave)
-        {
-            String resp="0";
-            Usuario usu=this.DATOS.login(email,this.encriptar(clave));
-            if(usu!=null)
-            {
-               if(usu.isActivo())
-               {
-                   Variables.usuarioId=usu.getId();
-                   Variables.rolId=usu.getRolId();
-                   Variables.rolNombre=usu.getRolNombre();
-                   Variables.usuarioNombre=usu.getNombre();
-                   Variables.usuarioEmail=usu.getEmail();
-                   
-                   resp="1";
-               }else{
-                   resp="2";
-               }
-            }
-            
-            return resp;
-        }*/
         
         public DefaultComboBoxModel seleccionar()
         {
@@ -238,17 +176,6 @@ public class EmpleadoControl
                     obj.setFecha_nacimiento(fecha_nacimiento);
                     obj.setDireccion(direccion);
                     obj.setTelefono(telefono);
-                    String encriptado;
-                    
-                    if(telefono.length()==64)
-                    {
-                        encriptado=telefono;
-                    }else
-                    {
-                        encriptado=this.encriptar(telefono);
-                    }
-                    
-                    //obj.setClave(encriptado);
 			
 			if(DATOS.actualizar(obj))
 			{
@@ -275,14 +202,6 @@ public class EmpleadoControl
                             obj.setFecha_nacimiento(fecha_nacimiento);
                             obj.setDireccion(direccion);
                             obj.setTelefono(telefono);
-                            String encriptado;
-
-                            if (telefono.length() == 64) {
-                                encriptado = telefono;
-                            } else {
-                                encriptado = this.encriptar(telefono);
-                            }
-                            //obj.setClave(encriptado);
 				
 				if(DATOS.actualizar(obj))
 				{
@@ -296,77 +215,6 @@ public class EmpleadoControl
 			
 		}
 	}
-        
-        /*
-        public String actualizar(int id, int RolId, String nombre, String tipoDocumento, String numDocumento, String direccion, String telefono,String email,String emailAnt, String clave)
-	{
-		if(email.equals(emailAnt))
-		{
-                    obj.setId(id);
-                    obj.setRolId(RolId);
-                    obj.setNombre(nombre);
-                    obj.setTipoDocumento(tipoDocumento);
-                    obj.setNumDocumento(numDocumento);
-                    obj.setDireccion(direccion);
-                    obj.setTelefono(telefono);
-                    obj.setEmail(email);
-                    String encriptado;
-                    
-                    if(clave.length()==64)
-                    {
-                        encriptado=clave;
-                    }else
-                    {
-                        encriptado=this.encriptar(clave);
-                    }
-                    obj.setClave(encriptado);
-			
-			if(DATOS.actualizar(obj))
-			{
-				return "OK";
-			}
-			else
-			{
-				return "Error en la actualización";
-			}
-			
-		}else
-		{
-			if(DATOS.existe(email))
-			{
-				return "El registro ya existe";
-			}else
-			{
-		            obj.setId(id);
-                            obj.setRolId(RolId);
-                            obj.setNombre(nombre);
-                            obj.setTipoDocumento(tipoDocumento);
-                            obj.setNumDocumento(numDocumento);
-                            obj.setDireccion(direccion);
-                            obj.setTelefono(telefono);
-                            obj.setEmail(email);
-                            String encriptado;
-
-                            if (clave.length() == 64) {
-                                encriptado = clave;
-                            } else {
-                                encriptado = this.encriptar(clave);
-                            }
-                            obj.setClave(encriptado);
-				
-				if(DATOS.actualizar(obj))
-				{
-					return "OK";
-				}
-				else
-				{
-					return "Error en la actualizacion";
-				}
-			}
-			
-		}
-	}
-        */
 	
 	public String desactivar(int id)
 	{

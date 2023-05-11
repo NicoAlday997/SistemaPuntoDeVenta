@@ -5,7 +5,7 @@
 package entidades;
 
 import java.sql.Date;
-import java.util.List;
+import java.util.List; 
 
 /**
  *
@@ -30,6 +30,7 @@ public class Venta {
 
     public Venta() {
     }
+    
 
     public Venta(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto, double total, String estado, double totUtilidad, List<DetalleVenta> detalles) {
         this.id = id;
@@ -48,7 +49,7 @@ public class Venta {
         this.detalles = detalles;
     }
 
-    public Venta(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto, double total, double totUtilidad, String estado) {
+    public Venta(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto, double total,double totUtilidad, String estado) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;
@@ -169,6 +170,7 @@ public class Venta {
         this.detalles = detalles;
     }
 
+    
     public double getTotUtilidad() {
         return totUtilidad;
     }

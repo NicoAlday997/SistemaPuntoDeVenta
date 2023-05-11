@@ -86,7 +86,6 @@ public class FrmSeleccionarProveedorCompra extends javax.swing.JDialog {
     {
         txtNombre.setText("");
         txtId.setText("");
-        txtNumDocumento.setText("");
         txtDireccion.setText("");
         txtTelefono.setText("");
         txtEmail.setText("");
@@ -138,15 +137,11 @@ public class FrmSeleccionarProveedorCompra extends javax.swing.JDialog {
         btnCancelar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        txtNumDocumento = new javax.swing.JFormattedTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
-        cboTipoDocumento = new javax.swing.JComboBox<>();
         txtDireccion = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -331,15 +326,9 @@ public class FrmSeleccionarProveedorCompra extends javax.swing.JDialog {
             }
         });
 
-        jLabel7.setText("Número Documento");
-
-        txtNumDocumento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
-
         jLabel8.setText("Dirección");
 
         jLabel9.setText("Télefono");
-
-        jLabel12.setText("Tipo Documento");
 
         jLabel6.setText("Email ");
 
@@ -348,8 +337,6 @@ public class FrmSeleccionarProveedorCompra extends javax.swing.JDialog {
                 txtTelefonoActionPerformed(evt);
             }
         });
-
-        cboTipoDocumento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "RUC", "DNI", "CEDULA", "PASAPORTE" }));
 
         txtDireccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -364,62 +351,37 @@ public class FrmSeleccionarProveedorCompra extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel12))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(txtNumDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(30, 30, 30)
-                                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(txtDireccion, javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(txtTelefono, javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(txtEmail))
-                                            .addGap(152, 152, 152)))
-                                    .addComponent(cboTipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(btnGuardar)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnCancelar))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(3, 3, 3)
-                                        .addComponent(jLabel4)))
-                                .addGap(152, 152, 152))))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9)
                     .addComponent(jLabel6))
-                .addContainerGap(396, Short.MAX_VALUE))
+                .addGap(42, 42, 42)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnGuardar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancelar))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel4))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txtDireccion, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtTelefono, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 486, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(16, 16, 16)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(cboTipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtNumDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -432,13 +394,13 @@ public class FrmSeleccionarProveedorCompra extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel4)
                 .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
                     .addComponent(btnCancelar))
-                .addContainerGap(302, Short.MAX_VALUE))
+                .addContainerGap(355, Short.MAX_VALUE))
         );
 
         tabGeneral.addTab("Mantenimiento", jPanel2);
@@ -477,16 +439,12 @@ public class FrmSeleccionarProveedorCompra extends javax.swing.JDialog {
             //String tipoPersona=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 1));
             String nombre=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 2));
             this.nombreAnt= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 2));
-            String tipoDocumento= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 3));
-            String numDocumento = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 4));
-            String direccion= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 5));
-            String telefono= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 6));
-            String email= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 7));
+            String direccion= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 3));
+            String telefono= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 4));
+            String email= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 5));
 
             txtId.setText(id);
             txtNombre.setText(nombre);
-            cboTipoDocumento.setSelectedItem(tipoDocumento);
-            txtNumDocumento.setText(numDocumento);
             txtDireccion.setText(direccion);
             txtTelefono.setText(telefono);
             txtEmail.setText(email);
@@ -587,12 +545,6 @@ public class FrmSeleccionarProveedorCompra extends javax.swing.JDialog {
             return;
         }
 
-        if(txtNumDocumento.getText().length()>20)
-        {
-            JOptionPane.showMessageDialog(this, "Debes ingresar un número de documento no mayor a 20 caracteres.", "Sistema", JOptionPane.WARNING_MESSAGE);
-            txtNumDocumento.requestFocus();
-            return;
-        }
 
         if(txtDireccion.getText().length()>70)
         {
@@ -613,7 +565,7 @@ public class FrmSeleccionarProveedorCompra extends javax.swing.JDialog {
         if(this.accion.equals("editar"))
         {
             //Editar
-            resp=this.CONTROL.actualizar(Integer.parseInt(txtId.getText()),"Proveedor",txtNombre.getText(),this.nombreAnt,(String)cboTipoDocumento.getSelectedItem(),txtNumDocumento.getText(), txtDireccion.getText(), txtTelefono.getText(),txtEmail.getText());
+            resp=this.CONTROL.actualizar(Integer.parseInt(txtId.getText()),"Proveedor",txtNombre.getText(),this.nombreAnt,txtDireccion.getText(), txtTelefono.getText(),txtEmail.getText());
 
             if(resp.equals("OK"))
             {
@@ -630,7 +582,7 @@ public class FrmSeleccionarProveedorCompra extends javax.swing.JDialog {
             }
         }else{
             //guardar
-            resp=this.CONTROL.insertar("Proveedor", txtNombre.getText(),(String) cboTipoDocumento.getSelectedItem(), txtNumDocumento.getText(), txtDireccion.getText(), txtTelefono.getText(), txtEmail.getText());
+            resp=this.CONTROL.insertar("Proveedor", txtNombre.getText(),txtDireccion.getText(), txtTelefono.getText(), txtEmail.getText());
 
             if(resp.equals("OK"))
             {
@@ -699,16 +651,13 @@ public class FrmSeleccionarProveedorCompra extends javax.swing.JDialog {
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSeleccionarProveedor;
     private javax.swing.JComboBox<String> cboNumPagina;
-    private javax.swing.JComboBox<String> cboTipoDocumento;
     private javax.swing.JComboBox<String> cboTotalPorPagina;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -722,7 +671,6 @@ public class FrmSeleccionarProveedorCompra extends javax.swing.JDialog {
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JFormattedTextField txtNumDocumento;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }

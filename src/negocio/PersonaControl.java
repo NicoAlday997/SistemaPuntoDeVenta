@@ -36,13 +36,13 @@ public class PersonaControl
 		List<Persona> lista=new ArrayList();
 		lista.addAll(DATOS.listar(texto, totalPorPagina, numPagina));
 		
-		String[] titulos= {"Id","Tipo Persona","Persona","Documento", "# Documento", "Dirección", "Telefono","Email", "Estado"};
+		String[] titulos= {"Id","Tipo Persona","Persona", "Dirección", "Telefono","Email", "Estado"};
 
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 		
 		String estado;
 		
-		String[] registro=new String[9];
+		String[] registro=new String[7];
 		
 		this.registrosMostrados=0;
 		
@@ -59,12 +59,10 @@ public class PersonaControl
 			registro[0]=Integer.toString(item.getId());
                         registro[1]=item.getTipoPersona();
                         registro[2]=item.getNombre();
-			registro[3]=item.getTipoDocumento();
-                        registro[4]=item.getNumDocumento();
-                        registro[5]=item.getDireccion();              
-			registro[6]=item.getTelefono();
-                        registro[7]=item.getEmail();
-			registro[8]=estado;
+                        registro[3]=item.getDireccion();              
+			registro[4]=item.getTelefono();
+                        registro[5]=item.getEmail();
+			registro[6]=estado;
 			this.modeloTabla.addRow(registro);
 			this.registrosMostrados=this.registrosMostrados+1;
 			
@@ -78,13 +76,13 @@ public class PersonaControl
 		List<Persona> lista=new ArrayList();
 		lista.addAll(DATOS.listarTipo(texto, totalPorPagina, numPagina,tipoPersona));
 		
-		String[] titulos= {"Id","Tipo Persona","Persona","Documento", "# Documento", "Dirección", "Telefono","Email", "Estado"};
+		String[] titulos= {"Id","Tipo Persona","Persona", "Dirección", "Telefono","Email", "Estado"};
 
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 		
 		String estado;
 		
-		String[] registro=new String[9];
+		String[] registro=new String[7];
 		
 		this.registrosMostrados=0;
 		
@@ -101,12 +99,10 @@ public class PersonaControl
 			registro[0]=Integer.toString(item.getId());
                         registro[1]=item.getTipoPersona();
                         registro[2]=item.getNombre();
-			registro[3]=item.getTipoDocumento();
-                        registro[4]=item.getNumDocumento();
-                        registro[5]=item.getDireccion();              
-			registro[6]=item.getTelefono();
-                        registro[7]=item.getEmail();
-			registro[8]=estado;
+                        registro[3]=item.getDireccion();              
+			registro[4]=item.getTelefono();
+                        registro[5]=item.getEmail();
+			registro[6]=estado;
 			this.modeloTabla.addRow(registro);
 			this.registrosMostrados=this.registrosMostrados+1;
 			
@@ -116,7 +112,7 @@ public class PersonaControl
 	}
         
 	
-	public String insertar(String tipoPersona, String nombre, String tipoDocumento, String numDocumento, String direccion, String telefono,String email )
+	public String insertar(String tipoPersona, String nombre, String direccion, String telefono,String email )
 	{
 		if(DATOS.existe(nombre))
 		{
@@ -126,8 +122,6 @@ public class PersonaControl
 		{
                     obj.setTipoPersona(tipoPersona);
                     obj.setNombre(nombre);
-                    obj.setTipoDocumento(tipoDocumento);
-                    obj.setNumDocumento(numDocumento);
                     obj.setDireccion(direccion);
                     obj.setTelefono(telefono);
                     obj.setEmail(email);
@@ -142,15 +136,13 @@ public class PersonaControl
 		}
 	}
 	
-	public String actualizar(int id, String tipoPersona, String nombre, String nombreAnt, String tipoDocumento, String numDocumento, String direccion, String telefono,String email)
+	public String actualizar(int id, String tipoPersona, String nombre, String nombreAnt, String direccion, String telefono,String email)
 	{
 		if(nombre.equals(nombreAnt))
 		{
                     obj.setId(id);
                     obj.setTipoPersona(tipoPersona);
                     obj.setNombre(nombre);
-                    obj.setTipoDocumento(tipoDocumento);
-                    obj.setNumDocumento(numDocumento);
                     obj.setDireccion(direccion);
                     obj.setTelefono(telefono);
                     obj.setEmail(email);
@@ -174,8 +166,6 @@ public class PersonaControl
 		            obj.setId(id);
                             obj.setTipoPersona(tipoPersona);
                             obj.setNombre(nombre);
-                            obj.setTipoDocumento(tipoDocumento);
-                            obj.setNumDocumento(numDocumento);
                             obj.setDireccion(direccion);
                             obj.setTelefono(telefono);
                             obj.setEmail(email);

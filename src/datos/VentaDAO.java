@@ -27,9 +27,7 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
 
     private final Conexion CON;
     private java.sql.PreparedStatement ps;
-    //private java.sql.PreparedStatement ps2;
     private java.sql.ResultSet rs;
-   // private java.sql.ResultSet rs2;
     private CallableStatement stmt=null;
     private boolean resp;
         
@@ -43,7 +41,7 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
         List<Venta> registros=new ArrayList();
 		
 		try {
-                    ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre, v.persona_id, p.nombre as persona_nombre, v.tipo_comprobante, v.serie_comprobante,v.num_comprobante, v.fecha,v.impuesto,v.total, v.total_utilidad, v.estado FROM venta v INNER JOIN persona p ON v.persona_id=p.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.num_comprobante LIKE ? ORDER BY v.id ASC LIMIT ?,?");
+                        ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre, v.persona_id, p.nombre as persona_nombre, v.tipo_comprobante, v.serie_comprobante,v.num_comprobante, v.fecha,v.impuesto,v.total, (select sum(utilidad) from detalle_venta where detalle_venta.venta_id=v.id) as utilidad, v.estado FROM venta v INNER JOIN persona p ON v.persona_id=p.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.num_comprobante LIKE ? ORDER BY v.id ASC LIMIT ?,?");
 			ps.setString(1,"%" + texto +"%");
                         ps.setInt(2, (numPagina-1)*totalPorPagina);
                         ps.setInt(3, totalPorPagina);
@@ -72,13 +70,13 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
         List<DetalleVenta> registros=new ArrayList();
 		
 		try {
-                    ps=CON.conectar().prepareStatement("SELECT a.id,a.codigo,a.nombre,a.stock,d.cantidad,d.precio,d.descuento,((d.cantidad*precio)-d.descuento) as sub_total,d.utilidad FROM detalle_venta d INNER JOIN articulo a ON d.articulo_id=a.id WHERE d.venta_id=?");
+                    ps=CON.conectar().prepareStatement("SELECT a.id,a.codigo,a.nombre,a.formato,a.stock,a.piezas,d.cantidad,d.piezas,d.precio,d.descuento,((d.cantidad*precio)-d.descuento) as sub_total,d.utilidad FROM detalle_venta d INNER JOIN articulo a ON d.articulo_id=a.id WHERE d.venta_id=?");
 			ps.setInt(1,id);
 			rs=ps.executeQuery();
 			
 			while(rs.next())
 			{
-				registros.add(new DetalleVenta(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4),rs.getInt(5),rs.getDouble(6), rs.getDouble(7), rs.getDouble(8), rs.getDouble(9)));
+				registros.add(new DetalleVenta(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4),rs.getInt(5),rs.getInt(6),rs.getInt(7),rs.getInt(8),rs.getDouble(9), rs.getDouble(10), rs.getDouble(11), rs.getDouble(12)));
 			}
 			ps.close();
 			rs.close();
@@ -101,11 +99,8 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
 		try { 
                     conn=CON.conectar();
                     conn.setAutoCommit(false);
-                    String sqlInsertVenta="INSERT INTO venta (persona_id, usuario_id, fecha, tipo_comprobante, serie_comprobante, num_comprobante, impuesto, total, total_utilidad,estado)VALUES (?,?,now(),?,?,?,?,?,?,?)";
-                    String sqlUtilidad="";
-                    
-                    //Cuando insertamos venta, hacemos calculo para la utilidad
-  
+                    String sqlInsertVenta="INSERT INTO venta (persona_id, usuario_id, fecha, tipo_comprobante, serie_comprobante, num_comprobante, impuesto, total,estado)VALUES (?,?,now(),?,?,?,?,?,?)";
+                      
                     ps = conn.prepareStatement(sqlInsertVenta, Statement.RETURN_GENERATED_KEYS);
                     ps.setInt(1, obj.getPersonaId());
                     ps.setInt(2, obj.getUsuarioId());
@@ -114,8 +109,7 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
                     ps.setString(5, obj.getNumComprobante());
                     ps.setDouble(6, obj.getImpuesto());
                     ps.setDouble(7, obj.getTotal()); 
-                    ps.setDouble(8, obj.getTotUtilidad());
-                    ps.setString(9, "Aceptado");
+                    ps.setString(8, "Aceptado");
                     
                     int filasAfectadas=ps.executeUpdate();
                     rs=ps.getGeneratedKeys();
@@ -126,39 +120,31 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
                     }
                     
                     if(filasAfectadas==1){
-                        String sqlInsertDetalle="INSERT INTO detalle_venta (venta_id, articulo_id, cantidad,precio,descuento,utilidad) VALUES (?,?,?,?,?,?)";
+                        String sqlInsertDetalle="INSERT INTO detalle_venta (venta_id, articulo_id, cantidad, piezas,precio,descuento,utilidad) VALUES (?,?,?,?,?,?,?)";
                         ps=conn.prepareStatement(sqlInsertDetalle);
-                        
-                                             
+                                                                     
                         for(DetalleVenta item: obj.getDetalles()){
                             
                             ps.setInt(1, idGenerado);
                             ps.setInt(2,item.getArticuloId());
                             ps.setInt(3, item.getCantidad());
-                            ps.setDouble(4, item.getPrecio());
-                            ps.setDouble(5, item.getDescuento());
-                            
-                            System.out.println(item.getArticuloId()+", "+item.getCantidad()+", " + item.getPrecio()+" ,"+item.getDescuento());
-                            //Hacer calculo de la utilidad por producto
-                            //double uti=25;
-                           
-                            String sql2="{ CALL decremento(?,?,?,?,?)}";
+                            ps.setInt(4, item.getPiezas());
+                            ps.setDouble(5, item.getPrecio());
+                            ps.setDouble(6, item.getDescuento());
+
+                            String sql2="{CALL decremento(?,?,?,?,?,?)}";
                            
                             stmt=conn.prepareCall(sql2);
                             
                             stmt.setInt(1, item.getArticuloId());
                             stmt.setInt(2, item.getCantidad());
-                            stmt.setDouble(3, item.getPrecio());
-                            stmt.setDouble(4, item.getDescuento());
-                            stmt.registerOutParameter(5, java.sql.Types.DECIMAL);
-
-                            // stmt.r
-                           
+                            stmt.setInt(3, item.getPiezas());
+                            stmt.setDouble(4, item.getPrecio());
+                            stmt.setDouble(5, item.getDescuento());
+                            stmt.registerOutParameter(6, java.sql.Types.DECIMAL);
                             stmt.execute();
                             
-         
-                           // System.out.println("utilidad de: "+stmt.getDouble(5));
-                            ps.setDouble(6, stmt.getDouble(5));
+                            ps.setDouble(7, stmt.getDouble(6));
                             
                             
                             resp=ps.executeUpdate()>0;                     
@@ -198,25 +184,37 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
 
         resp=false;
 		try {
+                        
+
 			ps=CON.conectar().prepareStatement("UPDATE venta SET estado='Anulado' WHERE id=?");
+                        System.out.println("le paso a consulta " + id);
 			ps.setInt(1, id);
+                         System.out.println("Paso a ejecutar");
 			if(ps.executeUpdate()>0)
 			{
 				resp=true;
 			}
+                        System.out.println("termina ejecucion");
 			
 			ps.close();
+                        
+                        System.out.println("cierro");
 			
 		} catch (SQLException e) {
 
+                     System.out.println("entro en el catch");
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}finally{
+                     System.out.println("entro en el finally");
 
 			ps=null;
 			CON.desconectar();
 		}
 		
+                                    
+                System.out.println("devuelvo resp");
 		return resp;
+                 
     }
 
     @Override
@@ -253,7 +251,6 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
         resp=false;
 		
 		try {
-			//ps=CON.conectar().prepareStatement("SELECT nombre FROM categoria WHERE nombre=?");
                         ps=CON.conectar().prepareStatement("SELECT id FROM venta WHERE serie_comprobante=? AND num_comprobante=?", java.sql.ResultSet.TYPE_SCROLL_SENSITIVE, java.sql.ResultSet.CONCUR_UPDATABLE);
 
 			ps.setString(1, texto1);
@@ -287,7 +284,7 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
     public String ultimoSerie(String tipoComprobante) {
         String serieComprobante="";
         try {
-            ps=CON.conectar().prepareStatement("SELECT serie_comprobante FROM venta where tipo_comprobante=? order by serie_comprobante desc limit 1");            
+            ps=CON.conectar().prepareStatement("SELECT serie_comprobante FROM venta where tipo_comprobante=? order by cast(serie_comprobante as decimal) desc limit 1");            
             ps.setString(1, tipoComprobante);
             rs=ps.executeQuery();
             
@@ -309,7 +306,7 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
     public String ultimoNumero(String tipoComprobante,String serieComprobante) {
         String numComprobante="";
         try {
-            ps=CON.conectar().prepareStatement("SELECT num_comprobante FROM venta WHERE tipo_comprobante=? AND serie_comprobante=? order by num_comprobante desc limit 1");            
+            ps=CON.conectar().prepareStatement("SELECT num_comprobante FROM venta WHERE tipo_comprobante=? AND serie_comprobante=? order by cast(num_comprobante as decimal) desc limit 1;");            
             ps.setString(1, tipoComprobante);
             ps.setString(2, serieComprobante);
             rs=ps.executeQuery();
@@ -331,13 +328,15 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
     
     public List<Venta> consultaFechas(Date fechaInicio, Date fechaFin) {
         List<Venta> registros=new ArrayList();
-        try {
-            ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre,v.persona_id,p.nombre as persona_nombre,v.tipo_comprobante,v.serie_comprobante,v.num_comprobante,v.fecha,v.impuesto,v.total,v.total_utilidad,v.estado FROM venta v INNER JOIN persona p ON v.persona_id=p.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.fecha>=? AND v.fecha<=?");
+        try {//                                           1     2         3                         4              5                         6                   7                   8                  9      10        11      12         
+            ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre,v.persona_id,p.nombre as persona_nombre,v.tipo_comprobante,v.serie_comprobante,v.num_comprobante,v.fecha,v.impuesto,v.total,v.total,v.estado FROM venta v INNER JOIN persona p ON v.persona_id=p.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.fecha>=? AND v.fecha<=? order by v.fecha asc");
+
             ps.setDate(1,fechaInicio);            
             ps.setDate(2,fechaFin);
             rs=ps.executeQuery();
             while(rs.next()){
                 registros.add(new Venta(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getDate(9),rs.getDouble(10),rs.getDouble(11),rs.getDouble(12),rs.getString(13)));
+
             }
             ps.close();
             rs.close();

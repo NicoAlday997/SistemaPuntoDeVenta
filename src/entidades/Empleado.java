@@ -11,6 +11,7 @@ package entidades;
  */
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class Empleado {
     private int id;
@@ -48,20 +49,6 @@ public class Empleado {
         this.nombre = nombre;
     }
     
-
-   /* public Empleado(int id, int rolId, String rolNombre, String nombre, String tipoDocumento, String numDocumento, String direccion, String telefono, String email, String clave, boolean activo) {
-        this.id = id;
-        this.rolId = rolId;
-        this.rolNombre = rolNombre;
-        this.nombre = nombre;
-        this.tipoDocumento = tipoDocumento;
-        this.numDocumento = numDocumento;
-        this.direccion = direccion;
-        this.telefono = telefono;
-        this.email = email;
-        this.clave = clave;
-        this.activo = activo;
-    }*/
 
     public int getId() {
         return id;
@@ -157,7 +144,36 @@ public class Empleado {
     public String toString() {
         return nombre;
     }
+    /*
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 17 * hash + this.id;
+        hash = 17 * hash + Objects.hashCode(this.nombre);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Empleado other = (Empleado) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return Objects.equals(this.nombre, other.nombre);
+    }*/
+
+  
+    
     
     
   

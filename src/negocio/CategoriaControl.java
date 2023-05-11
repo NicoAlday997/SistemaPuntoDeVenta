@@ -37,13 +37,13 @@ public class CategoriaControl
 		List<Categoria> lista=new ArrayList();
 		lista.addAll(DATOS.listar(texto));
 		
-		String[] titulos= {"Id", "Nombre", "Descripcion", "Estado"};
+		String[] titulos= {"Id", "Nombre", "Descripcion", "Comision","Estado"};
 		
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 		
 		String estado;
 		
-		String[] registro=new String[4];
+		String[] registro=new String[5];
 		
 		this.registrosMostrados=0;
 		
@@ -60,7 +60,8 @@ public class CategoriaControl
 			registro[0]=Integer.toString(item.getId());
 			registro[1]=item.getNombre();
 			registro[2]=item.getDescripcion();
-			registro[3]=estado;
+                        registro[3]=String.valueOf(item.getComision());
+			registro[4]=estado;
 			this.modeloTabla.addRow(registro);
 			this.registrosMostrados=this.registrosMostrados+1;
 			
@@ -69,7 +70,7 @@ public class CategoriaControl
 		return this.modeloTabla;
 	}
 	
-	public String insertar(String nombre, String descripcion)
+	public String insertar(String nombre, String descripcion, String comision)
 	{
 		if(DATOS.existe(nombre))
 		{
@@ -79,6 +80,7 @@ public class CategoriaControl
 		{
 			obj.setNombre(nombre);
 			obj.setDescripcion(descripcion);
+                        obj.setComision(Double.parseDouble(comision));
 			if(DATOS.insertar(obj))
 			{
 				return "OK";
@@ -90,13 +92,14 @@ public class CategoriaControl
 		}
 	}
 	
-	public String actualizar(int id, String nombre, String nombreAnt, String descripcion)
+	public String actualizar(int id, String nombre, String nombreAnt, String descripcion, String comision)
 	{
 		if(nombre.equals(nombreAnt))
 		{
 			obj.setId(id);
 			obj.setNombre(nombre);
 			obj.setDescripcion(descripcion);
+                        obj.setComision(Double.parseDouble(comision));
 			
 			if(DATOS.actualizar(obj))
 			{
@@ -117,6 +120,7 @@ public class CategoriaControl
 				obj.setId(id);
 				obj.setNombre(nombre);
 				obj.setDescripcion(descripcion);
+                                obj.setComision(Double.parseDouble(comision));
 				
 				if(DATOS.actualizar(obj))
 				{

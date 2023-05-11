@@ -21,6 +21,7 @@ public class VentaRuta {
     private String vendedorNombre;
     private int ayudanteId;
     private String ayudanteNombre;
+    private String serieComprobante;
     private String numComprobante;
     private Date fecha;
     private double otrosProductos;
@@ -29,9 +30,10 @@ public class VentaRuta {
     private double gastosMedicos;
     private double refacciones;
     private double combustible;
-    private double promocion;
+    private double otrosGastos;
     private double efectivo;
     private double totalLiquidar;
+    private double totalUtilidad;
     private String estado;
     
     private List<DetalleVentaRuta> detalles;
@@ -39,7 +41,8 @@ public class VentaRuta {
     public VentaRuta() {
     }
 
-    public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double promocion, double efectivo, double totalLiquidar, String estado, List<DetalleVentaRuta> detalles) {
+    
+    public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String serieComprobante,String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double otrosGastos,  double totalLiquidar, double totalUtilidad, double efectivo, String estado, List<DetalleVentaRuta> detalles) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;
@@ -49,6 +52,7 @@ public class VentaRuta {
         this.vendedorNombre = vendedorNombre;
         this.ayudanteId = ayudanteId;
         this.ayudanteNombre = ayudanteNombre;
+        this.serieComprobante = serieComprobante;
         this.numComprobante = numComprobante;
         this.fecha = fecha;
         this.otrosProductos = otrosProductos;
@@ -57,14 +61,16 @@ public class VentaRuta {
         this.gastosMedicos = gastosMedicos;
         this.refacciones = refacciones;
         this.combustible = combustible;
-        this.promocion = promocion;
+        this.otrosGastos = otrosGastos;
         this.efectivo = efectivo;
         this.totalLiquidar = totalLiquidar;
+        this.totalUtilidad=totalUtilidad;
         this.estado = estado;
         this.detalles = detalles;
     }
 
-    public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double promocion, double efectivo, double totalLiquidar, String estado) {
+    
+    public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String serieComprobante,String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double otrosGastos,  double totalLiquidar , double totalUtilidad,double efectivo, String estado) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;
@@ -74,6 +80,7 @@ public class VentaRuta {
         this.vendedorNombre = vendedorNombre;
         this.ayudanteId = ayudanteId;
         this.ayudanteNombre = ayudanteNombre;
+        this.serieComprobante = serieComprobante;
         this.numComprobante = numComprobante;
         this.fecha = fecha;
         this.otrosProductos = otrosProductos;
@@ -82,13 +89,14 @@ public class VentaRuta {
         this.gastosMedicos = gastosMedicos;
         this.refacciones = refacciones;
         this.combustible = combustible;
-        this.promocion = promocion;
+        this.otrosGastos = otrosGastos;
         this.efectivo = efectivo;
         this.totalLiquidar = totalLiquidar;
+        this.totalUtilidad=totalUtilidad;
         this.estado = estado;
     }
 
-    public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, String numComprobante, Date fecha, double totalLiquidar, double efectivo, String estado) {
+   public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, String numComprobante, Date fecha, double totalLiquidar, double totalUtilidad, double efectivo, String estado) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;
@@ -98,6 +106,7 @@ public class VentaRuta {
         this.fecha = fecha;
         this.efectivo = efectivo;
         this.totalLiquidar=totalLiquidar;
+        this.totalUtilidad=totalUtilidad;
         this.estado = estado;
     }
     
@@ -175,6 +184,15 @@ public class VentaRuta {
         this.ayudanteNombre = ayudanteNombre;
     }
 
+    public String getSerieComprobante() {
+        return serieComprobante;
+    }
+
+    public void setSerieComprobante(String serieComprobante) {
+        this.serieComprobante = serieComprobante;
+    }
+    
+
     public String getNumComprobante() {
         return numComprobante;
     }
@@ -239,12 +257,12 @@ public class VentaRuta {
         this.combustible = combustible;
     }
 
-    public double getPromocion() {
-        return promocion;
+    public double getOtrosGastos() {
+        return otrosGastos;
     }
 
-    public void setPromocion(double promocion) {
-        this.promocion = promocion;
+    public void setOtrosGastos(double otrosGastos) {
+        this.otrosGastos = otrosGastos;
     }
 
     public double getEfectivo() {
@@ -262,6 +280,16 @@ public class VentaRuta {
     public void setTotalLiquidar(double totalLiquidar) {
         this.totalLiquidar = totalLiquidar;
     }
+
+    public double getTotalUtilidad() {
+        return totalUtilidad;
+    }
+
+    public void setTotalUtilidad(double totalUtilidad) {
+        this.totalUtilidad = totalUtilidad;
+    }
+    
+    
 
     public String getEstado() {
         return estado;

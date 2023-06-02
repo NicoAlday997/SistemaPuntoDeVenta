@@ -22,6 +22,7 @@ public class Venta {
     private String numComprobante;
     private Date fecha;
     private double impuesto;
+    private double descuentoProducto;
     private double total;
     private String estado;
     private double totUtilidad;
@@ -32,7 +33,7 @@ public class Venta {
     }
     
 
-    public Venta(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto, double total, String estado, double totUtilidad, List<DetalleVenta> detalles) {
+    public Venta(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto, double descuentoProducto,double total, String estado, double totUtilidad, List<DetalleVenta> detalles) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;
@@ -43,13 +44,14 @@ public class Venta {
         this.numComprobante = numComprobante;
         this.fecha = fecha;
         this.impuesto = impuesto;
+        this.descuentoProducto=descuentoProducto;
         this.total = total;
         this.totUtilidad=totUtilidad;
         this.estado = estado;
         this.detalles = detalles;
     }
 
-    public Venta(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto, double total,double totUtilidad, String estado) {
+    public Venta(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto, double descuentoProducto,double total,double totUtilidad, String estado) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;
@@ -60,6 +62,7 @@ public class Venta {
         this.numComprobante = numComprobante;
         this.fecha = fecha;
         this.impuesto = impuesto;
+        this.descuentoProducto=descuentoProducto;
         this.total = total;
         this.totUtilidad=totUtilidad;
         this.estado = estado;
@@ -145,6 +148,16 @@ public class Venta {
     public void setImpuesto(double impuesto) {
         this.impuesto = impuesto;
     }
+
+    public double getDescuentoProducto() {
+        return descuentoProducto;
+    }
+
+    public void setDescuentoProducto(double descuentoProducto) {
+        this.descuentoProducto = descuentoProducto;
+    }
+    
+    
 
     public double getTotal() {
         return total;

@@ -52,11 +52,11 @@ public class VentaControl
 		List<Venta> lista=new ArrayList();
 		lista.addAll(DATOS.listar(texto, totalPorPagina, numPagina));
 		
-		String[] titulos= {"Id","Usuario Id","Usuario","Cliente ID", "Cliente","Tipo Comprobante","Serie", "Numero","Fecha", "Impuesto","Total","Utilidad", "Estado"};
+		String[] titulos= {"Id","Usuario Id","Usuario","Cliente ID", "Cliente","Tipo Comprobante","Serie", "Numero","Fecha", "Impuesto","Descuento P.","Total","Utilidad", "Estado"};
 		
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 				
-		String[] registro=new String[13];
+		String[] registro=new String[14];
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		this.registrosMostrados=0;
 		
@@ -72,9 +72,10 @@ public class VentaControl
                         registro[7]=item.getNumComprobante();
                         registro[8]=sdf.format(item.getFecha());
                         registro[9]=Double.toString(item.getImpuesto());
-                        registro[10]=Double.toString(item.getTotal());
-                        registro[11]=Double.toString(item.getTotUtilidad());
-                        registro[12]=item.getEstado();
+                        registro[10]=Double.toString(item.getDescuentoProducto());
+                        registro[11]=Double.toString(item.getTotal());
+                        registro[12]=Double.toString(item.getTotUtilidad());
+                        registro[13]=item.getEstado();
                                             
 			this.modeloTabla.addRow(registro);
 			this.registrosMostrados=this.registrosMostrados+1;
@@ -107,7 +108,7 @@ public class VentaControl
                         registro[7]=Integer.toString(item.getPiezas());//PIEZAS
                         registro[8]=Double.toString(item.getPrecio());//PRECIO
                         registro[9]=Double.toString(item.getDescuento());//DESCUENTO
-                        registro[10]=Double.toString(item.getSubTotal());//SUBTOTAL
+                        registro[10]=String.format("%.2f",item.getSubTotal());//SUBTOTAL
                         registro[11]=Double.toString(item.getUtilidad());//UTILIDAD
                        
                         this.modeloTabla.addRow(registro);			
@@ -222,10 +223,12 @@ public class VentaControl
         List<Venta> lista=new ArrayList();
         lista.addAll(DATOS.consultaFechas(fechaInicio,fechaFin));
         
-        String[] titulos={"Id","Usuario ID","Usuario","Cliente ID","Cliente","Tipo Comprobante","Serie","Número","Fecha","Impuesto","Total","Estado"};
+        String[] titulos={"Id","Usuario Id","Usuario","Cliente ID", "Cliente","Tipo Comprobante","Serie", "Numero","Fecha", "Impuesto","Descuento P.","Total","Utilidad", "Estado"};
+
+        //String[] titulos={"Id","Usuario ID","Usuario","Cliente ID", "Cliente","Tipo Comprobante","Serie", "Número","Fecha", "Impuesto","Total","Estado"};
         this.modeloTabla=new DefaultTableModel(null,titulos);        
         
-        String[] registro = new String[12];
+        String[] registro = new String[14];
         SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
         
         this.registrosMostrados=0;
@@ -240,8 +243,10 @@ public class VentaControl
             registro[7]=item.getNumComprobante();
             registro[8]=sdf.format(item.getFecha());
             registro[9]=Double.toString(item.getImpuesto());
-            registro[10]=Double.toString(item.getTotal());
-            registro[11]=item.getEstado();
+            registro[10]=Double.toString(item.getDescuentoProducto());
+            registro[11]=Double.toString(item.getTotal());
+            registro[12]=Double.toString(item.getTotUtilidad());
+            registro[13]=item.getEstado();
             
             this.modeloTabla.addRow(registro);
             this.registrosMostrados=this.registrosMostrados+1;

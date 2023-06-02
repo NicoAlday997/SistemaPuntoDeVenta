@@ -94,6 +94,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         mnuConsultas = new javax.swing.JMenu();
         itemConsultaCompras = new javax.swing.JMenuItem();
         itemConsultaVentas = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
         mnuSalir = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -245,13 +246,22 @@ public class FrmPrincipal extends javax.swing.JFrame {
         mnuConsultas.add(itemConsultaCompras);
 
         itemConsultaVentas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        itemConsultaVentas.setText("Consulta Ventas");
+        itemConsultaVentas.setText("Consulta Ventas Generales");
         itemConsultaVentas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemConsultaVentasActionPerformed(evt);
             }
         });
         mnuConsultas.add(itemConsultaVentas);
+
+        jMenuItem13.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem13.setText("Consulta Ventas Rutas");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        mnuConsultas.add(jMenuItem13);
 
         menuBar.add(mnuConsultas);
 
@@ -384,6 +394,13 @@ public class FrmPrincipal extends javax.swing.JFrame {
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        // TODO add your handling code here:
+        FrmConsultaVentasRutasFecha frm=new FrmConsultaVentasRutasFecha();
+        escritorio.add(frm);
+        frm.setVisible(true);
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -427,6 +444,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

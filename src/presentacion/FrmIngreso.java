@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import negocio.ComprobacionControl;
 import negocio.IngresoControl;
 
 
@@ -19,6 +20,7 @@ import negocio.IngresoControl;
 public class FrmIngreso extends javax.swing.JInternalFrame {
 
     private final IngresoControl CONTROL;
+    private final ComprobacionControl COMPCONTROL;
     private String accion;
     private String nombreAnt; 
     private int totalPorPagina=10;
@@ -36,6 +38,7 @@ public class FrmIngreso extends javax.swing.JInternalFrame {
         initComponents();
         this.contenedor=frmP;
         this.CONTROL=new IngresoControl();
+        this.COMPCONTROL=new ComprobacionControl();
         this.paginar();
         this.listar("",false);
         this.primeraCarga=false;
@@ -336,6 +339,17 @@ public class FrmIngreso extends javax.swing.JInternalFrame {
         btnGuardar.setVisible(true);
     }
     
+     private void comprobacion(){
+        entidades.Comprobacion comp;
+        comp=this.COMPCONTROL.obtenerComprobacion();
+            
+        //System.out.println(comp);
+            
+        if(comp.getPzsArticulo() != comp.getPzsDetalle()){
+            this.mensajeError("Error de COMPROBACIÓN");
+        }
+    }
+    
     private void mensajeError(String mensaje)
     {
         JOptionPane.showMessageDialog(this, mensaje, "Sistema", JOptionPane.ERROR_MESSAGE);
@@ -535,7 +549,7 @@ public class FrmIngreso extends javax.swing.JInternalFrame {
                     .addComponent(cboTotalPorPagina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addComponent(jLabel11))
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnDesactivar)
                     .addComponent(lblTotalRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -755,13 +769,13 @@ public class FrmIngreso extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTotalImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel12))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel13))
@@ -844,6 +858,7 @@ public class FrmIngreso extends javax.swing.JInternalFrame {
         if (resp.equals("OK")) {
 
             this.mensajeOk("Registrado correctamente");
+            this.comprobacion();
             this.limpiar();
             this.listar("", false);
 

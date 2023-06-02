@@ -32,6 +32,7 @@ public class VentaRuta {
     private double combustible;
     private double otrosGastos;
     private double efectivo;
+    private double descuentoProducto;
     private double totalLiquidar;
     private double totalUtilidad;
     private String estado;
@@ -42,7 +43,7 @@ public class VentaRuta {
     }
 
     
-    public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String serieComprobante,String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double otrosGastos,  double totalLiquidar, double totalUtilidad, double efectivo, String estado, List<DetalleVentaRuta> detalles) {
+    public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String serieComprobante,String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double otrosGastos, double descuentoProducto, double totalLiquidar, double totalUtilidad, double efectivo, String estado, List<DetalleVentaRuta> detalles) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;
@@ -63,6 +64,7 @@ public class VentaRuta {
         this.combustible = combustible;
         this.otrosGastos = otrosGastos;
         this.efectivo = efectivo;
+        this.descuentoProducto=descuentoProducto;
         this.totalLiquidar = totalLiquidar;
         this.totalUtilidad=totalUtilidad;
         this.estado = estado;
@@ -70,7 +72,7 @@ public class VentaRuta {
     }
 
     
-    public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String serieComprobante,String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double otrosGastos,  double totalLiquidar , double totalUtilidad,double efectivo, String estado) {
+    public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String serieComprobante,String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double otrosGastos, double descuentoProducto ,double totalLiquidar , double totalUtilidad,double efectivo, String estado) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;
@@ -90,13 +92,14 @@ public class VentaRuta {
         this.refacciones = refacciones;
         this.combustible = combustible;
         this.otrosGastos = otrosGastos;
+        this.descuentoProducto=descuentoProducto;
         this.efectivo = efectivo;
         this.totalLiquidar = totalLiquidar;
         this.totalUtilidad=totalUtilidad;
         this.estado = estado;
     }
 
-   public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, String numComprobante, Date fecha, double totalLiquidar, double totalUtilidad, double efectivo, String estado) {
+  /* public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, String numComprobante, Date fecha, double totalLiquidar, double totalUtilidad, double efectivo, String estado) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;
@@ -108,7 +111,7 @@ public class VentaRuta {
         this.totalLiquidar=totalLiquidar;
         this.totalUtilidad=totalUtilidad;
         this.estado = estado;
-    }
+    }*/
     
     
 
@@ -272,6 +275,16 @@ public class VentaRuta {
     public void setEfectivo(double efectivo) {
         this.efectivo = efectivo;
     }
+
+    public double getDescuentoProducto() {
+        return descuentoProducto;
+    }
+
+    public void setDescuentoProducto(double descuentoProducto) {
+        this.descuentoProducto = descuentoProducto;
+    }
+    
+    
 
     public double getTotalLiquidar() {
         return totalLiquidar;

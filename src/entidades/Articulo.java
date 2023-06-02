@@ -159,6 +159,10 @@ public class Articulo {
     }
     
     public String getDescripcion() {
+        
+        if(descripcion==null){
+            return "";
+        }
         return descripcion;
     }
 
@@ -167,10 +171,17 @@ public class Articulo {
     }
 
     public String getImagen() {
-        return imagen;
+        
+        if(imagen==null){
+            return "";
+        }
+        
+        return imagen;    
     }
 
     public void setImagen(String imagen) {
+        
+        
         this.imagen = imagen;
     }
 

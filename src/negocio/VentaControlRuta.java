@@ -58,11 +58,11 @@ public class VentaControlRuta
 		lista.addAll(DATOS.listar(texto, totalPorPagina, numPagina));
 		
 		String[] titulos= {"Id","Usuario Id","Usuario","Ruta ID", "Ruta","Vendedor ID", "Vendedor","Ayudante ID","Ayudante","Serie","Numero","Fecha","Otros Productos",
-                    "Creditos cobrados","Creditos otorgados","Gastos medicos","Refacciones","Combustible","Otros Gastos","Total Liquidar","Utilidad","Efectivo","Estado"};
+                    "Creditos cobrados","Creditos otorgados","Gastos medicos","Refacciones","Combustible","Otros Gastos","Descuento P.","Total Liquidar","Utilidad","Efectivo","Estado"};
 		
 		this.modeloTabla=new DefaultTableModel(null, titulos);
 				
-		String[] registro=new String[23];
+		String[] registro=new String[24];
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		this.registrosMostrados=0;
 		
@@ -86,11 +86,12 @@ public class VentaControlRuta
                         registro[15]=Double.toString(item.getGastosMedicos());
                         registro[16]=Double.toString(item.getRefacciones());
                         registro[17]=Double.toString(item.getCombustible());
-                        registro[18]=Double.toString(item.getOtrosGastos());                     
-                        registro[19]=Double.toString(item.getTotalLiquidar());
-                        registro[20]=Double.toString(item.getTotalUtilidad());
-                        registro[21]=Double.toString(item.getEfectivo());
-                        registro[22]=item.getEstado();
+                        registro[18]=Double.toString(item.getOtrosGastos());  
+                        registro[19]=Double.toString(item.getDescuentoProducto());
+                        registro[20]=Double.toString(item.getTotalLiquidar());
+                        registro[21]=Double.toString(item.getTotalUtilidad());
+                        registro[22]=Double.toString(item.getEfectivo());
+                        registro[23]=item.getEstado();
                                             
 			this.modeloTabla.addRow(registro);
 			this.registrosMostrados=this.registrosMostrados+1;
@@ -124,7 +125,8 @@ public class VentaControlRuta
                         registro[7]=Integer.toString(item.getPiezas());
                         registro[8]=Double.toString(item.getPrecio());
                         registro[9]=Double.toString(item.getDescuento());
-                        registro[10]=Double.toString(item.getSubTotal());
+                        //registro[10]=Double.toString(item.getSubTotal());
+                        registro[10]=String.format("%.2f",item.getSubTotal());
                         registro[11]=Double.toString(item.getComisionA());
                         registro[12]=Double.toString(item.getComisionD());
                         registro[13]=Double.toString(item.getUtilidad());
@@ -286,25 +288,40 @@ public class VentaControlRuta
         List<VentaRuta> lista=new ArrayList();
         lista.addAll(DATOS.consultaFechas(fechaInicio,fechaFin));
         
-        String[] titulos={"Id","Usuario ID","Usuario","Ruta ID","Ruta","Número","Fecha","Total","Utilidad","Efectivo","Estado"};
+        //String[] titulos={"Id","Usuario ID","Usuario","Ruta ID","Ruta","Número","Fecha","Total","Utilidad","Efectivo","Estado"};
+        String[] titulos= {"Id","Usuario Id","Usuario","Ruta ID", "Ruta","Vendedor ID", "Vendedor","Ayudante ID","Ayudante","Serie","Numero","Fecha","Otros Productos",
+        "Creditos cobrados","Creditos otorgados","Gastos medicos","Refacciones","Combustible","Otros Gastos","Descuento P.","Total Liquidar","Utilidad","Efectivo","Estado"};
         this.modeloTabla=new DefaultTableModel(null,titulos);        
         
-        String[] registro = new String[11];
+        String[] registro = new String[24];
         SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
         
         this.registrosMostrados=0;
         for (VentaRuta item:lista){
             registro[0]=Integer.toString(item.getId());
-            registro[1]=Integer.toString(item.getUsuarioId());
-            registro[2]=item.getUsuarioNombre();
-            registro[3]=Integer.toString(item.getRutaId());
-            registro[4]=item.getRutaNombre();
-            registro[5]=item.getNumComprobante();
-            registro[6]=sdf.format(item.getFecha());
-            registro[7]=Double.toString(item.getTotalLiquidar());
-            registro[8]=Double.toString(item.getTotalUtilidad());
-            registro[9]=Double.toString(item.getEfectivo());
-            registro[10]=item.getEstado();
+                        registro[1]=Integer.toString(item.getUsuarioId());
+                        registro[2]=item.getUsuarioNombre();
+                        registro[3]=Integer.toString(item.getRutaId());
+                        registro[4]=item.getRutaNombre();
+                        registro[5]=Integer.toString(item.getVendedorId());
+                        registro[6]=item.getVendedorNombre();
+                        registro[7]=Integer.toString(item.getAyudanteId());
+                        registro[8]=item.getAyudanteNombre();
+                        registro[9]=item.getSerieComprobante();
+                        registro[10]=item.getNumComprobante();
+                        registro[11]=sdf.format(item.getFecha());
+                        registro[12]=Double.toString(item.getOtrosProductos());
+                        registro[13]=Double.toString(item.getCreditosCobrados());
+                        registro[14]=Double.toString(item.getCreditosOtorgados());
+                        registro[15]=Double.toString(item.getGastosMedicos());
+                        registro[16]=Double.toString(item.getRefacciones());
+                        registro[17]=Double.toString(item.getCombustible());
+                        registro[18]=Double.toString(item.getOtrosGastos());  
+                        registro[19]=Double.toString(item.getDescuentoProducto());
+                        registro[20]=Double.toString(item.getTotalLiquidar());
+                        registro[21]=Double.toString(item.getTotalUtilidad());
+                        registro[22]=Double.toString(item.getEfectivo());
+                        registro[23]=item.getEstado();
             
             this.modeloTabla.addRow(registro);
             this.registrosMostrados=this.registrosMostrados+1;

@@ -19,8 +19,9 @@ public class Conexion {
         private final String DRIVER="com.mysql.cj.jdbc.Driver";
 
 	private final String URL="jdbc:mysql://localhost:3306/";
-	private final String DB="prueba_test_1";
-        //private final String DB="dbsistema";
+	private final String DB="ultima_copia_negocio";
+        //private final String DB="copia_negocio";
+       // private final String DB="prueba_test_1";v
 	private final String USER="root";
 	private final String PASSWORD="1234";
 	

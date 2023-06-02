@@ -15,6 +15,7 @@ import negocio.ArticuloControl;
 import entidades.Empleado;
 import java.awt.Color;
 import java.lang.Object;
+import negocio.ComprobacionControl;
 
 
 
@@ -25,6 +26,7 @@ import java.lang.Object;
 public class FrmVentaRutas extends javax.swing.JInternalFrame {
 
     private final VentaControlRuta CONTROL;
+    private final ComprobacionControl COMPCONTROL;
     private final ArticuloControl DATOSARTICULO;
     private String accion;
     private String nombreAnt; 
@@ -58,6 +60,7 @@ public class FrmVentaRutas extends javax.swing.JInternalFrame {
         verde=new java.awt.Color(0,199,88,50);
         this.contenedor=frmP;
         this.CONTROL=new VentaControlRuta();
+        this.COMPCONTROL=new ComprobacionControl();
         this.DATOSARTICULO=new ArticuloControl();
         this.paginar();
         this.listar("",false);
@@ -157,6 +160,11 @@ public class FrmVentaRutas extends javax.swing.JInternalFrame {
     
     private void ocultarColumnasDetalles()
     {
+        tablaDetalles.getColumnModel().getColumn(0).setMaxWidth(0);
+        tablaDetalles.getColumnModel().getColumn(0).setMinWidth(0);
+        tablaDetalles.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+        tablaDetalles.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
+        
         tablaDetalles.getColumnModel().getColumn(11).setMaxWidth(0);
         tablaDetalles.getColumnModel().getColumn(11).setMinWidth(0);
         tablaDetalles.getTableHeader().getColumnModel().getColumn(11).setMaxWidth(0);
@@ -896,6 +904,17 @@ public class FrmVentaRutas extends javax.swing.JInternalFrame {
             txtNumComprobante.setText(Integer.toString(num));
         }        
     }
+     
+    private void comprobacion(){
+        entidades.Comprobacion comp;
+        comp=this.COMPCONTROL.obtenerComprobacion();
+            
+        //System.out.println(comp);
+            
+        if(comp.getPzsArticulo() != comp.getPzsDetalle()){
+            this.mensajeError("Error de COMPROBACIÓN");
+        }
+    }
     
     
 
@@ -915,6 +934,8 @@ public class FrmVentaRutas extends javax.swing.JInternalFrame {
         txtEstado.setText("0.00");
         txtSubTotal.setText("0.00");
         txtDescuentos.setText("0.00");
+        this.obtenerNumero();
+        
         this.crearDetalles();
         this.calculaEfectivo();
         this.calculaCrementos();
@@ -1623,6 +1644,7 @@ public class FrmVentaRutas extends javax.swing.JInternalFrame {
         if (resp.equals("OK")) {
 
             this.mensajeOk("Registrado correctamente");
+            this.comprobacion();
             this.limpiar();
             this.listar("", false);
 
@@ -1655,7 +1677,7 @@ public class FrmVentaRutas extends javax.swing.JInternalFrame {
             String combustible= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),17));
             String otrosGastos= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),18));
             //String totalLiquidar= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),19));
-            String efectivo= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),21));
+            String efectivo= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),22));
                                             
                         
            Empleado vendedor=new Empleado(idVendedor, nombreVendedor);

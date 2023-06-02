@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import negocio.ComprobacionControl;
 import negocio.IngresoControl;
 import negocio.VentaControl;
 
@@ -23,6 +24,7 @@ import negocio.VentaControl;
 public class FrmVenta extends javax.swing.JInternalFrame {
 
     private final VentaControl CONTROL;
+    private final ComprobacionControl COMPCONTROL;
     private String accion;
     private String nombreAnt; 
     private int totalPorPagina=10;
@@ -42,6 +44,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
         usuario=negocio.Variables.rolNombre;
         this.contenedor=frmP;
         this.CONTROL=new VentaControl();
+        this.COMPCONTROL=new ComprobacionControl();
         this.paginar();
         this.listar("",false);
         this.primeraCarga=false;
@@ -115,13 +118,20 @@ public class FrmVenta extends javax.swing.JInternalFrame {
      private void ocultarColumnasDetalles()
     {
 
-        tablaDetalles.getColumnModel().getColumn(11).setMaxWidth(0);
-        tablaDetalles.getColumnModel().getColumn(11).setMinWidth(0);
-        tablaDetalles.getTableHeader().getColumnModel().getColumn(11).setMaxWidth(0);
-        tablaDetalles.getTableHeader().getColumnModel().getColumn(11).setMinWidth(0);
+        tablaDetalles.getColumnModel().getColumn(0).setMaxWidth(0);
+        tablaDetalles.getColumnModel().getColumn(0).setMinWidth(0);
+        tablaDetalles.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+        tablaDetalles.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
         
-       
-         
+        if(usuario.equals("Almacenero")|| usuario.equals("Vendedor")){ 
+                tablaDetalles.getColumnModel().getColumn(11).setMaxWidth(0);
+                tablaDetalles.getColumnModel().getColumn(11).setMinWidth(0);
+                tablaDetalles.getTableHeader().getColumnModel().getColumn(11).setMaxWidth(0);
+                tablaDetalles.getTableHeader().getColumnModel().getColumn(11).setMinWidth(0); 
+            }  
+        
+        
+  
     } 
     
  
@@ -315,8 +325,9 @@ public class FrmVenta extends javax.swing.JInternalFrame {
            
         };
         
-        modeloDetalles.setColumnIdentifiers(new Object[] {"ID","CODIGO","ARTICULO","FORMATO","STOCK","S. PZS","CANTIDAD","PIEZAS","PRECIO","DESCUENTO","SUBTOTAL"});
+        modeloDetalles.setColumnIdentifiers(new Object[] {"ID","CODIGO","ARTICULO","FORMATO","STOCK","S. PZS","CANTIDAD","PIEZAS","PRECIO","DESCUENTO","SUBTOTAL", "UTILIDAD"});
         tablaDetalles.setModel(modeloDetalles);
+        this.ocultarColumnasDetalles();
     }
     
     
@@ -353,11 +364,11 @@ public class FrmVenta extends javax.swing.JInternalFrame {
       
            
             if(Integer.parseInt(stock)==0){
-                this.modeloDetalles.addRow(new Object[]{id,codigo,nombre, formato,stock, piezas,"0",piezas,precio,descuento,precio});
+                this.modeloDetalles.addRow(new Object[]{id,codigo,nombre, formato,stock, piezas,"0",piezas,precio,descuento,precio, "0"});
 
             }else
             {
-              this.modeloDetalles.addRow(new Object[]{id,codigo,nombre, formato,stock, piezas,"1","0",precio,descuento,precio});
+              this.modeloDetalles.addRow(new Object[]{id,codigo,nombre, formato,stock, piezas,"1","0",precio,descuento,precio, "0"});
  
             }
             this.calcularTotales();
@@ -413,9 +424,21 @@ public class FrmVenta extends javax.swing.JInternalFrame {
         txtTotal.setText("0.00");
         txtSubTotal.setText("0.00");
         txtTotalImpuesto.setText("0.00");
+        this.obtenerNumero();
         this.crearDetalles();
         
         btnGuardar.setVisible(true);
+    }
+    
+    private void comprobacion(){
+        entidades.Comprobacion comp;
+        comp=this.COMPCONTROL.obtenerComprobacion();
+            
+        //System.out.println(comp);
+            
+        if(comp.getPzsArticulo() != comp.getPzsDetalle()){
+            this.mensajeError("Error de COMPROBACIÓN");
+        }
     }
     
     private void mensajeError(String mensaje)
@@ -795,7 +818,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)
                         .addComponent(txtSerieComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                         .addComponent(jLabel7)
                         .addGap(6, 6, 6)
                         .addComponent(txtNumComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -879,9 +902,10 @@ public class FrmVenta extends javax.swing.JInternalFrame {
                         .addGap(8, 8, 8)
                         .addComponent(jLabel8))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnVerArticulos)
+                        .addGap(3, 3, 3)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnVerArticulos)))
                     .addComponent(btnQuitar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -907,7 +931,7 @@ public class FrmVenta extends javax.swing.JInternalFrame {
                                 .addGap(4, 4, 4)
                                 .addComponent(jLabel12))
                             .addComponent(txtTotalImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnGuardar)
                             .addComponent(btnCancelar))))
@@ -958,10 +982,10 @@ public class FrmVenta extends javax.swing.JInternalFrame {
 
             this.modeloDetalles=CONTROL.listarDetalle(Integer.parseInt(id));
             tablaDetalles.setModel(modeloDetalles);
-            if(usuario.equals("Almacenero")|| usuario.equals("Vendedor")){ 
+           /* if(usuario.equals("Almacenero")|| usuario.equals("Vendedor")){ 
                 this.ocultarColumnasDetalles();
-            }
-            
+            }*/
+            this.ocultarColumnasDetalles();
             this.calcularTotales();
 
             tabGeneral.setEnabledAt(1, true);
@@ -1025,6 +1049,11 @@ public class FrmVenta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDesactivarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        tablaDetalles.getColumnModel().getColumn(11).setMaxWidth(0);
+        tablaDetalles.getColumnModel().getColumn(11).setMinWidth(0);
+        tablaDetalles.getTableHeader().getColumnModel().getColumn(11).setMaxWidth(0);
+        tablaDetalles.getTableHeader().getColumnModel().getColumn(11).setMinWidth(0);
+        
         tabGeneral.setEnabledAt(1, true);
         tabGeneral.setEnabledAt(0, false);
         tabGeneral.setSelectedIndex(1);
@@ -1144,6 +1173,9 @@ public class FrmVenta extends javax.swing.JInternalFrame {
         if (resp.equals("OK")) {
 
             this.mensajeOk("Registrado correctamente");
+            
+            this.comprobacion();
+                
             this.limpiar();
             this.listar("", false);
 

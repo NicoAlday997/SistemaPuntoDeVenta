@@ -41,7 +41,9 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
         List<Venta> registros=new ArrayList();
 		
 		try {
-                        ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre, v.persona_id, p.nombre as persona_nombre, v.tipo_comprobante, v.serie_comprobante,v.num_comprobante, v.fecha,v.impuesto,v.total, (select sum(utilidad) from detalle_venta where detalle_venta.venta_id=v.id) as utilidad, v.estado FROM venta v INNER JOIN persona p ON v.persona_id=p.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.num_comprobante LIKE ? ORDER BY v.id ASC LIMIT ?,?");
+                        ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre, v.persona_id, p.nombre as persona_nombre, v.tipo_comprobante, v.serie_comprobante,v.num_comprobante, v.fecha,v.impuesto,(select sum(descuento) from detalle_venta where detalle_venta.venta_id=v.id) as descuento_producto, v.total, (select sum(utilidad) from detalle_venta where detalle_venta.venta_id=v.id) as utilidad, v.estado FROM venta v INNER JOIN persona p ON v.persona_id=p.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.num_comprobante LIKE ? ORDER BY v.id ASC LIMIT ?,?");
+
+                        //ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre, v.persona_id, p.nombre as persona_nombre, v.tipo_comprobante, v.serie_comprobante,v.num_comprobante, v.fecha,v.impuesto,v.total, (select sum(utilidad) from detalle_venta where detalle_venta.venta_id=v.id) as utilidad, v.estado FROM venta v INNER JOIN persona p ON v.persona_id=p.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.num_comprobante LIKE ? ORDER BY v.id ASC LIMIT ?,?");
 			ps.setString(1,"%" + texto +"%");
                         ps.setInt(2, (numPagina-1)*totalPorPagina);
                         ps.setInt(3, totalPorPagina);
@@ -49,7 +51,7 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
 			
 			while(rs.next())
 			{
-				registros.add(new Venta(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4),rs.getString(5),rs.getString(6), rs.getString(7),rs.getString(8),rs.getDate(9), rs.getDouble(10), rs.getDouble(11),rs.getDouble(12),rs.getString(13)));
+				registros.add(new Venta(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4),rs.getString(5),rs.getString(6), rs.getString(7),rs.getString(8),rs.getDate(9), rs.getDouble(10), rs.getDouble(11),rs.getDouble(12),rs.getDouble(13),rs.getString(14)));
 			}
 			ps.close();
 			rs.close();
@@ -70,12 +72,13 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
         List<DetalleVenta> registros=new ArrayList();
 		
 		try {
-                    ps=CON.conectar().prepareStatement("SELECT a.id,a.codigo,a.nombre,a.formato,a.stock,a.piezas,d.cantidad,d.piezas,d.precio,d.descuento,((d.cantidad*precio)-d.descuento) as sub_total,d.utilidad FROM detalle_venta d INNER JOIN articulo a ON d.articulo_id=a.id WHERE d.venta_id=?");
+                    ps=CON.conectar().prepareStatement("SELECT a.id,a.codigo,a.nombre,a.formato,a.stock,a.piezas,d.cantidad,d.piezas,d.precio,d.descuento,(((d.cantidad*precio)+(d.piezas*(precio/a.formato)))-d.descuento) as sub_total,d.utilidad FROM detalle_venta d INNER JOIN articulo a ON d.articulo_id=a.id WHERE d.venta_id=?");
 			ps.setInt(1,id);
 			rs=ps.executeQuery();
 			
 			while(rs.next())
 			{
+                            System.out.println("dao" + rs.getDouble(12));
 				registros.add(new DetalleVenta(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4),rs.getInt(5),rs.getInt(6),rs.getInt(7),rs.getInt(8),rs.getDouble(9), rs.getDouble(10), rs.getDouble(11), rs.getDouble(12)));
 			}
 			ps.close();
@@ -328,15 +331,18 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>{
     
     public List<Venta> consultaFechas(Date fechaInicio, Date fechaFin) {
         List<Venta> registros=new ArrayList();
-        try {//                                           1     2         3                         4              5                         6                   7                   8                  9      10        11      12         
-            ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre,v.persona_id,p.nombre as persona_nombre,v.tipo_comprobante,v.serie_comprobante,v.num_comprobante,v.fecha,v.impuesto,v.total,v.total,v.estado FROM venta v INNER JOIN persona p ON v.persona_id=p.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.fecha>=? AND v.fecha<=? order by v.fecha asc");
+        try {
+            //                                           1     2         3                         4              5                         6                   7                   8                  9      10        11      12         
+            //ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre,v.persona_id,p.nombre as persona_nombre,v.tipo_comprobante,v.serie_comprobante,v.num_comprobante,v.fecha,v.impuesto,v.total,v.total,v.estado FROM venta v INNER JOIN persona p ON v.persona_id=p.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.fecha>=? AND v.fecha<=? order by v.fecha asc");
+           
+            ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre, v.persona_id, p.nombre as persona_nombre, v.tipo_comprobante, v.serie_comprobante,v.num_comprobante, v.fecha,v.impuesto,(select sum(descuento) from detalle_venta where detalle_venta.venta_id=v.id) as descuento_producto,v.total, (select sum(utilidad) from detalle_venta where detalle_venta.venta_id=v.id) as utilidad, v.estado FROM venta v INNER JOIN persona p ON v.persona_id=p.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.fecha>=? AND v.fecha<=? order by v.fecha asc");
 
             ps.setDate(1,fechaInicio);            
             ps.setDate(2,fechaFin);
             rs=ps.executeQuery();
             while(rs.next()){
-                registros.add(new Venta(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getDate(9),rs.getDouble(10),rs.getDouble(11),rs.getDouble(12),rs.getString(13)));
-
+                registros.add(new Venta(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getDate(9),rs.getDouble(10), rs.getDouble(11),rs.getDouble(12),rs.getDouble(13),rs.getString(14)));
+                //registros.add(new Venta(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getDate(9),rs.getDouble(10),rs.getDouble(11),rs.getDouble(12),rs.getString(13)));
             }
             ps.close();
             rs.close();

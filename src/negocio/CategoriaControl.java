@@ -59,7 +59,13 @@ public class CategoriaControl
 			
 			registro[0]=Integer.toString(item.getId());
 			registro[1]=item.getNombre();
-			registro[2]=item.getDescripcion();
+                        
+                        if(item.getDescripcion()==null){
+                            registro[2]="";
+                        }else{
+                            registro[2]=item.getDescripcion();
+                        }
+			
                         registro[3]=String.valueOf(item.getComision());
 			registro[4]=estado;
 			this.modeloTabla.addRow(registro);

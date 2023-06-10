@@ -22,17 +22,43 @@ public class Venta {
     private String numComprobante;
     private Date fecha;
     private double impuesto;
-    private double descuentoProducto;
+    private double ventaBruta;
+    private double descuentoCigarro;
+    private double descuentoRefresco;
+    private double costoVenta;
+    private double utilidad;
     private double total;
     private String estado;
-    private double totUtilidad;
     
     private List<DetalleVenta> detalles;
 
     public Venta() {
     }
-    
 
+    public Venta(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto,double ventaBruta, double descuentoCigarro, double descuentoRefresco, double costoVenta, double utilidad, double total, String estado, List<DetalleVenta> detalles) {
+        this.id = id;
+        this.usuarioId = usuarioId;
+        this.usuarioNombre = usuarioNombre;
+        this.personaId = personaId;
+        this.personaNombre = personaNombre;
+        this.tipoComprobante = tipoComprobante;
+        this.serieComprobante = serieComprobante;
+        this.numComprobante = numComprobante;
+        this.fecha = fecha;
+        this.impuesto = impuesto;
+        this.ventaBruta=ventaBruta;
+        this.descuentoCigarro = descuentoCigarro;
+        this.descuentoRefresco = descuentoRefresco;
+        this.costoVenta = costoVenta;
+        this.utilidad = utilidad;
+        this.total = total;
+        this.estado = estado;
+        this.detalles = detalles;
+    }
+    
+    
+    
+/*
     public Venta(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto, double descuentoProducto,double total, String estado, double totUtilidad, List<DetalleVenta> detalles) {
         this.id = id;
         this.usuarioId = usuarioId;
@@ -49,9 +75,11 @@ public class Venta {
         this.totUtilidad=totUtilidad;
         this.estado = estado;
         this.detalles = detalles;
-    }
+    }*/
+    
 
-    public Venta(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto, double descuentoProducto,double total,double totUtilidad, String estado) {
+    
+    public Venta(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto, double ventaBruta, double descuentoCigarro, double descuentoRefresco, double costoVenta, double utilidad, double total, String estado) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;
@@ -62,13 +90,32 @@ public class Venta {
         this.numComprobante = numComprobante;
         this.fecha = fecha;
         this.impuesto = impuesto;
-        this.descuentoProducto=descuentoProducto;
+        this.ventaBruta=ventaBruta;
+        this.descuentoCigarro = descuentoCigarro;
+        this.descuentoRefresco = descuentoRefresco;
+        this.costoVenta = costoVenta;
+        this.utilidad = utilidad;
         this.total = total;
-        this.totUtilidad=totUtilidad;
         this.estado = estado;
     }
 
-    
+    /*
+    public Venta(int id, int usuarioId, String usuarioNombre, int personaId, String personaNombre, String tipoComprobante, String serieComprobante, String numComprobante, Date fecha, double impuesto, double descuentoProducto,double total,double totUtilidad, String estado) {
+    this.id = id;
+    this.usuarioId = usuarioId;
+    this.usuarioNombre = usuarioNombre;
+    this.personaId = personaId;
+    this.personaNombre = personaNombre;
+    this.tipoComprobante = tipoComprobante;
+    this.serieComprobante = serieComprobante;
+    this.numComprobante = numComprobante;
+    this.fecha = fecha;
+    this.impuesto = impuesto;
+    this.descuentoProducto=descuentoProducto;
+    this.total = total;
+    this.totUtilidad=totUtilidad;
+    this.estado = estado;
+    }*/
     public int getId() {
         return id;
     }
@@ -149,14 +196,48 @@ public class Venta {
         this.impuesto = impuesto;
     }
 
-    public double getDescuentoProducto() {
-        return descuentoProducto;
+    public double getVentaBruta() {
+        return ventaBruta;
     }
 
-    public void setDescuentoProducto(double descuentoProducto) {
-        this.descuentoProducto = descuentoProducto;
+    public void setVentaBruta(double ventaBruta) {
+        this.ventaBruta = ventaBruta;
     }
     
+    
+
+    public double getDescuentoCigarro() {
+        return descuentoCigarro;
+    }
+
+    public void setDescuentoCigarro(double descuentoCigarro) {
+        this.descuentoCigarro = descuentoCigarro;
+    }
+
+    public double getDescuentoRefresco() {
+        return descuentoRefresco;
+    }
+
+    public void setDescuentoRefresco(double descuentoRefresco) {
+        this.descuentoRefresco = descuentoRefresco;
+    }
+
+    public double getCostoVenta() {
+        return costoVenta;
+    }
+
+    public void setCostoVenta(double costoVenta) {
+        this.costoVenta = costoVenta;
+    }
+
+    public double getUtilidad() {
+        return utilidad;
+    }
+
+    public void setUtilidad(double utilidad) {
+        this.utilidad = utilidad;
+    }
+
     
 
     public double getTotal() {
@@ -181,17 +262,6 @@ public class Venta {
 
     public void setDetalles(List<DetalleVenta> detalles) {
         this.detalles = detalles;
-    }
-
-    
-    public double getTotUtilidad() {
-        return totUtilidad;
-    }
-
-    public void setTotUtilidad(double totUtilidad) {
-        this.totUtilidad = totUtilidad;
-    }
-    
-    
+    } 
     
 }

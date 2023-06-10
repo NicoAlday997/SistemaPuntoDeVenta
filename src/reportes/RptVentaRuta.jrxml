@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RptVentaRuta" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="daac5c2c-cc0f-4fb4-8327-c01bcca26d4e">
 	<property name="ireport.zoom" value="2.1435888100000025"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="466"/>
+	<property name="ireport.y" value="156"/>
 	<subDataset name="CREM/DEC" uuid="8d48fc51-318f-4ed8-b7d2-c2407b7c7f5b">
 		<queryString language="SQL">
 			<![CDATA[SELECT
@@ -27,7 +27,12 @@ FROM
 	<parameter name="idVentaRuta" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
-(select (((detalle_venta_ruta.cantidad*detalle_venta_ruta.precio)+(detalle_venta_ruta.piezas*(detalle_venta_ruta.precio/articulo.formato)))-detalle_venta_ruta.descuento)) as subtot,
+(select ((detalle_venta_ruta.cantidad*detalle_venta_ruta.precio)+(detalle_venta_ruta.piezas*(detalle_venta_ruta.precio/articulo.formato)))) as subtot,
+(total_liquidar+otros_gastos+combustible+refacciones+gastos_medicos+creditos_otorgados-creditos_cobrados-otros_productos)as venta_neta,
+(select sum(descuento) from detalle_venta_ruta dvr, articulo a where dvr.venta_ruta_id=venta_ruta.id and dvr.articulo_id=a.id) as descuento_producto,
+(select sum(comision) from detalle_venta_ruta dvr, articulo a where dvr.venta_ruta_id=venta_ruta.id and dvr.articulo_id=a.id) as comision_venta,
+(select sum(dvr.cantidad) from detalle_venta_ruta dvr, articulo a where dvr.venta_ruta_id=venta_ruta.id and dvr.articulo_id=a.id) as paquetes,
+(select sum(dvr.piezas) from detalle_venta_ruta dvr, articulo a where dvr.venta_ruta_id=venta_ruta.id and dvr.articulo_id=a.id) as piezas,
      articulo.`codigo` AS articulo_codigo,
      articulo.`nombre` AS articulo_nombre,
      articulo.`formato` AS articulo_formato,
@@ -65,6 +70,11 @@ FROM
 WHERE venta_ruta.`id`=$P{idVentaRuta}]]>
 	</queryString>
 	<field name="subtot" class="java.math.BigDecimal"/>
+	<field name="venta_neta" class="java.math.BigDecimal"/>
+	<field name="descuento_producto" class="java.math.BigDecimal"/>
+	<field name="comision_venta" class="java.math.BigDecimal"/>
+	<field name="paquetes" class="java.math.BigDecimal"/>
+	<field name="piezas" class="java.math.BigDecimal"/>
 	<field name="articulo_codigo" class="java.lang.String"/>
 	<field name="articulo_nombre" class="java.lang.String"/>
 	<field name="articulo_formato" class="java.lang.Integer"/>
@@ -403,16 +413,6 @@ WHERE venta_ruta.`id`=$P{idVentaRuta}]]>
 				</textElement>
 				<text><![CDATA[TOTAL PAQUETES/PIEZAS]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="218" y="0" width="42" height="20" uuid="b835a8f9-45c3-42b0-baf9-577fac309752"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{detalle_venta_ruta_cantidad_1}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="272" y="0" width="41" height="20" uuid="163e6c2f-8975-4c4e-ad33-d73bdae876ad"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{detalle_venta_ruta_piezas_1}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="325" y="0" width="118" height="20" uuid="bc38adca-465b-4c9f-ae29-a70d1c171c1c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -420,13 +420,6 @@ WHERE venta_ruta.`id`=$P{idVentaRuta}]]>
 				</textElement>
 				<text><![CDATA[SUBTOTAL]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="465" y="0" width="80" height="20" uuid="64bdc374-427e-4aa8-b463-e3e95f89f626"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[String.format("%.2f",$V{subtot_1})]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="445" y="0" width="20" height="20" uuid="705bc677-05ef-4e11-8992-3f8c703a819c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -434,6 +427,23 @@ WHERE venta_ruta.`id`=$P{idVentaRuta}]]>
 				</textElement>
 				<text><![CDATA[$]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="465" y="0" width="80" height="20" uuid="46365b21-7af2-4ace-8f22-711d30f87754"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{venta_neta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="219" y="0" width="41" height="20" uuid="004a7415-6ae5-4424-a2d3-0d3e74c37a8e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{paquetes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="272" y="0" width="41" height="20" uuid="3c32a084-36e3-404a-ba38-5955f5c1bd9c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{piezas}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnFooter>
 	<pageFooter>
@@ -674,18 +684,11 @@ WHERE venta_ruta.`id`=$P{idVentaRuta}]]>
 				<text><![CDATA[COMISIÓN]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="91" y="60" width="67" height="20" uuid="a2a8e8ea-ade0-474d-b766-5bc234563ed8"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{detalle_venta_ruta_comision_1}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="465" y="40" width="80" height="20" uuid="80a6675f-6129-4d5e-961e-7ce5b04ea2a4"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[String.format("%.2f",($V{subtot_1}+$F{venta_ruta_otros_productos}+$F{venta_ruta_creditos_cobrados}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[String.format("%.2f",($F{venta_neta}+$F{venta_ruta_otros_productos}+$F{venta_ruta_creditos_cobrados}+$F{descuento_producto}))]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="445" y="0" width="20" height="20" uuid="ebc8cd83-8650-4752-97af-bd736d42e06e"/>
@@ -766,6 +769,13 @@ WHERE venta_ruta.`id`=$P{idVentaRuta}]]>
 				<reportElement x="465" y="171" width="80" height="20" uuid="ba81817a-c6b9-4969-865e-3aa85f914a3e"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{venta_ruta_otros_gastos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="91" y="60" width="67" height="20" uuid="8b20ad21-733b-412f-8ddc-17283b937797"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{comision_venta}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

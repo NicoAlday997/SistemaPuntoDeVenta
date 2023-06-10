@@ -24,8 +24,8 @@ public class Login extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass().getResource("/presentacion/images/punto_venta.png")).getImage());
         txtEmail.setForeground(Color.gray);
         txtClave.setForeground(Color.gray);
-        txtEmail.setText("irvin.alday290999@gmail.com");
-        txtClave.setText("1234");
+       /* txtEmail.setText("irvin.alday290999@gmail.com");
+        txtClave.setText("1234");*/
         /*txtEmail.setText("alday997@gmail.com");
         txtClave.setText("administrador");*/
 

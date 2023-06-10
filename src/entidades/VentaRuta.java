@@ -31,10 +31,17 @@ public class VentaRuta {
     private double refacciones;
     private double combustible;
     private double otrosGastos;
-    private double efectivo;
-    private double descuentoProducto;
+    
+    private double ventaBruta;
+    private double descuentoCigarro;
+    private double descuentoRefresco;
+    private double costoVenta;
+    private double utilidadBruta;
+    private double utilidadNeta;
+    private double fs;  
+   
     private double totalLiquidar;
-    private double totalUtilidad;
+    private double efectivo;
     private String estado;
     
     private List<DetalleVentaRuta> detalles;
@@ -42,7 +49,41 @@ public class VentaRuta {
     public VentaRuta() {
     }
 
+    public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String serieComprobante, String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double otrosGastos, double descuentoCigarro, double descuentoRefresco, double utilidadBruta, double utilidadNeta, double fs, double totalLiquidar, double efectivo, String estado) {
+        this.id = id;
+        this.usuarioId = usuarioId;
+        this.usuarioNombre = usuarioNombre;
+        this.rutaId = rutaId;
+        this.rutaNombre = rutaNombre;
+        this.vendedorId = vendedorId;
+        this.vendedorNombre = vendedorNombre;
+        this.ayudanteId = ayudanteId;
+        this.ayudanteNombre = ayudanteNombre;
+        this.serieComprobante = serieComprobante;
+        this.numComprobante = numComprobante;
+        this.fecha = fecha;
+        this.otrosProductos = otrosProductos;
+        this.creditosCobrados = creditosCobrados;
+        this.creditosOtorgados = creditosOtorgados;
+        this.gastosMedicos = gastosMedicos;
+        this.refacciones = refacciones;
+        this.combustible = combustible;
+        this.otrosGastos = otrosGastos;
+        this.descuentoCigarro = descuentoCigarro;
+        this.descuentoRefresco = descuentoRefresco;
+        this.utilidadBruta = utilidadBruta;
+        this.utilidadNeta = utilidadNeta;
+        this.fs = fs;
+        this.totalLiquidar = totalLiquidar;
+        this.efectivo = efectivo;
+        this.estado = estado;
+    }
+
+
+
     
+    
+    /*
     public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String serieComprobante,String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double otrosGastos, double descuentoProducto, double totalLiquidar, double totalUtilidad, double efectivo, String estado, List<DetalleVentaRuta> detalles) {
         this.id = id;
         this.usuarioId = usuarioId;
@@ -63,16 +104,16 @@ public class VentaRuta {
         this.refacciones = refacciones;
         this.combustible = combustible;
         this.otrosGastos = otrosGastos;
+        
         this.efectivo = efectivo;
         this.descuentoProducto=descuentoProducto;
         this.totalLiquidar = totalLiquidar;
         this.totalUtilidad=totalUtilidad;
         this.estado = estado;
         this.detalles = detalles;
-    }
+    }*/
 
-    
-    public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String serieComprobante,String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double otrosGastos, double descuentoProducto ,double totalLiquidar , double totalUtilidad,double efectivo, String estado) {
+    public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String serieComprobante, String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double otrosGastos, double descuentoCigarro, double descuentoRefresco, double utilidadBruta, double utilidadNeta, double fs, double totalLiquidar, double efectivo, String estado, List<DetalleVentaRuta> detalles) {  
         this.id = id;
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;
@@ -92,29 +133,77 @@ public class VentaRuta {
         this.refacciones = refacciones;
         this.combustible = combustible;
         this.otrosGastos = otrosGastos;
-        this.descuentoProducto=descuentoProducto;
-        this.efectivo = efectivo;
+        this.descuentoCigarro = descuentoCigarro;
+        this.descuentoRefresco = descuentoRefresco;
+        this.utilidadBruta = utilidadBruta;
+        this.utilidadNeta = utilidadNeta;
+        this.fs = fs;
         this.totalLiquidar = totalLiquidar;
-        this.totalUtilidad=totalUtilidad;
+        this.efectivo = efectivo;
         this.estado = estado;
+        this.detalles = detalles;
     }
 
-  /* public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, String numComprobante, Date fecha, double totalLiquidar, double totalUtilidad, double efectivo, String estado) {
+    /* public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String serieComprobante,String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double otrosGastos, double descuentoProducto ,double totalLiquidar , double totalUtilidad,double efectivo, String estado) {
+    this.id = id;
+    this.usuarioId = usuarioId;
+    this.usuarioNombre = usuarioNombre;
+    this.rutaId = rutaId;
+    this.rutaNombre = rutaNombre;
+    this.vendedorId = vendedorId;
+    this.vendedorNombre = vendedorNombre;
+    this.ayudanteId = ayudanteId;
+    this.ayudanteNombre = ayudanteNombre;
+    this.serieComprobante = serieComprobante;
+    this.numComprobante = numComprobante;
+    this.fecha = fecha;
+    this.otrosProductos = otrosProductos;
+    this.creditosCobrados = creditosCobrados;
+    this.creditosOtorgados = creditosOtorgados;
+    this.gastosMedicos = gastosMedicos;
+    this.refacciones = refacciones;
+    this.combustible = combustible;
+    this.otrosGastos = otrosGastos;
+    this.descuentoProducto=descuentoProducto;
+    this.efectivo = efectivo;
+    this.totalLiquidar = totalLiquidar;
+    this.totalUtilidad=totalUtilidad;
+    this.estado = estado;
+    }*/
+    public VentaRuta(int id, int usuarioId, String usuarioNombre, int rutaId, String rutaNombre, int vendedorId, String vendedorNombre, int ayudanteId, String ayudanteNombre, String serieComprobante, String numComprobante, Date fecha, double otrosProductos, double creditosCobrados, double creditosOtorgados, double gastosMedicos, double refacciones, double combustible, double otrosGastos, double ventaBruta, double descuentoCigarro, double descuentoRefresco, double costoVenta, double utilidadBruta, double utilidadNeta, double fs, double totalLiquidar, double efectivo, String estado) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;
         this.rutaId = rutaId;
         this.rutaNombre = rutaNombre;
+        this.vendedorId = vendedorId;
+        this.vendedorNombre = vendedorNombre;
+        this.ayudanteId = ayudanteId;
+        this.ayudanteNombre = ayudanteNombre;
+        this.serieComprobante = serieComprobante;
         this.numComprobante = numComprobante;
         this.fecha = fecha;
+        this.otrosProductos = otrosProductos;
+        this.creditosCobrados = creditosCobrados;
+        this.creditosOtorgados = creditosOtorgados;
+        this.gastosMedicos = gastosMedicos;
+        this.refacciones = refacciones;
+        this.combustible = combustible;
+        this.otrosGastos = otrosGastos;
+        this.ventaBruta = ventaBruta;
+        this.descuentoCigarro = descuentoCigarro;
+        this.descuentoRefresco = descuentoRefresco;
+        this.costoVenta = costoVenta;
+        this.utilidadBruta = utilidadBruta;
+        this.utilidadNeta = utilidadNeta;
+        this.fs = fs;
+        this.totalLiquidar = totalLiquidar;
         this.efectivo = efectivo;
-        this.totalLiquidar=totalLiquidar;
-        this.totalUtilidad=totalUtilidad;
         this.estado = estado;
-    }*/
+    }
     
     
-
+    
     public int getId() {
         return id;
     }
@@ -268,6 +357,71 @@ public class VentaRuta {
         this.otrosGastos = otrosGastos;
     }
 
+    public double getVentaBruta() {
+        return ventaBruta;
+    }
+
+    public void setVentaBruta(double ventaBruta) {
+        this.ventaBruta = ventaBruta;
+    }
+
+    public double getDescuentoCigarro() {
+        return descuentoCigarro;
+    }
+
+    public void setDescuentoCigarro(double descuentoCigarro) {
+        this.descuentoCigarro = descuentoCigarro;
+    }
+
+    public double getDescuentoRefresco() {
+        return descuentoRefresco;
+    }
+
+    public void setDescuentoRefresco(double descuentoRefresco) {
+        this.descuentoRefresco = descuentoRefresco;
+    }
+
+    public double getCostoVenta() {
+        return costoVenta;
+    }
+
+    public void setCostoVenta(double costoVenta) {
+        this.costoVenta = costoVenta;
+    }
+
+    public double getUtilidadBruta() {
+        return utilidadBruta;
+    }
+
+    public void setUtilidadBruta(double utilidadBruta) {
+        this.utilidadBruta = utilidadBruta;
+    }
+
+    public double getUtilidadNeta() {
+        return utilidadNeta;
+    }
+
+    public void setUtilidadNeta(double utilidadNeta) {
+        this.utilidadNeta = utilidadNeta;
+    }
+
+    public double getFs() {
+        return fs;
+    }
+
+    public void setFs(double fs) {
+        this.fs = fs;
+    }
+    
+     public double getTotalLiquidar() {
+        return totalLiquidar;
+    }
+
+    public void setTotalLiquidar(double totalLiquidar) {
+        this.totalLiquidar = totalLiquidar;
+    }
+    
+
     public double getEfectivo() {
         return efectivo;
     }
@@ -275,34 +429,8 @@ public class VentaRuta {
     public void setEfectivo(double efectivo) {
         this.efectivo = efectivo;
     }
-
-    public double getDescuentoProducto() {
-        return descuentoProducto;
-    }
-
-    public void setDescuentoProducto(double descuentoProducto) {
-        this.descuentoProducto = descuentoProducto;
-    }
-    
     
 
-    public double getTotalLiquidar() {
-        return totalLiquidar;
-    }
-
-    public void setTotalLiquidar(double totalLiquidar) {
-        this.totalLiquidar = totalLiquidar;
-    }
-
-    public double getTotalUtilidad() {
-        return totalUtilidad;
-    }
-
-    public void setTotalUtilidad(double totalUtilidad) {
-        this.totalUtilidad = totalUtilidad;
-    }
-    
-    
 
     public String getEstado() {
         return estado;
@@ -318,12 +446,7 @@ public class VentaRuta {
 
     public void setDetalles(List<DetalleVentaRuta> detalles) {
         this.detalles = detalles;
-    }
-
-    
-   
- 
-    
+    } 
     
     
 }

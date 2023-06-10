@@ -41,7 +41,17 @@ public class VentaRutaDAO implements CrudVentaInterface<VentaRuta, DetalleVentaR
         List<VentaRuta> registros=new ArrayList();
 		
 		try {   //ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre, v.ruta_id, r.nombre as ruta_nombre,v.vendedor_id, e1.nombre as vendedor_nombre,v.ayudante_id, e2.nombre as ayudante_nombre,v.serie_comprobante,v.num_comprobante, v.fecha, v.otros_productos,v.creditos_cobrados, v.creditos_otorgados,v.gastos_medicos, v.refacciones, v.combustible, otros_gastos ,v.total_liquidar,(select sum(utilidad) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id) as utilidad,v.efectivo, v.estado FROM venta_ruta v INNER JOIN ruta r ON v.ruta_id=r.id INNER JOIN usuario u ON v.usuario_id=u.id INNER JOIN empleado e1 ON v.vendedor_id=e1.id INNER JOIN empleado e2 ON v.ayudante_id=e2.id WHERE v.num_comprobante LIKE ? ORDER BY v.id ASC LIMIT ?,?");
-			ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre, v.ruta_id, r.nombre as ruta_nombre,v.vendedor_id, e1.nombre as vendedor_nombre,v.ayudante_id, e2.nombre as ayudante_nombre,v.serie_comprobante,v.num_comprobante, v.fecha, v.otros_productos,v.creditos_cobrados, v.creditos_otorgados,v.gastos_medicos, v.refacciones, v.combustible, otros_gastos ,(select sum(descuento) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id) as descuento_producto,v.total_liquidar,(select sum(utilidad) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id) as utilidad,v.efectivo, v.estado FROM venta_ruta v INNER JOIN ruta r ON v.ruta_id=r.id INNER JOIN usuario u ON v.usuario_id=u.id INNER JOIN empleado e1 ON v.vendedor_id=e1.id INNER JOIN empleado e2 ON v.ayudante_id=e2.id WHERE v.num_comprobante LIKE ? ORDER BY v.id ASC LIMIT ?,?");
+			//ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre, v.ruta_id, r.nombre as ruta_nombre,v.vendedor_id, e1.nombre as vendedor_nombre,v.ayudante_id, e2.nombre as ayudante_nombre,v.serie_comprobante,v.num_comprobante, v.fecha, v.otros_productos,v.creditos_cobrados, v.creditos_otorgados,v.gastos_medicos, v.refacciones, v.combustible, otros_gastos ,(select sum(descuento) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id) as descuento_producto,v.total_liquidar,(select sum(utilidad) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id) as utilidad,v.efectivo, v.estado FROM venta_ruta v INNER JOIN ruta r ON v.ruta_id=r.id INNER JOIN usuario u ON v.usuario_id=u.id INNER JOIN empleado e1 ON v.vendedor_id=e1.id INNER JOIN empleado e2 ON v.ayudante_id=e2.id WHERE v.num_comprobante LIKE ? ORDER BY v.id ASC LIMIT ?,?");
+
+                        ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre, v.ruta_id, r.nombre as ruta_nombre,v.vendedor_id, e1.nombre as vendedor_nombre,v.ayudante_id, e2.nombre as ayudante_nombre,v.serie_comprobante,v.num_comprobante, v.fecha, v.otros_productos,v.creditos_cobrados, v.creditos_otorgados,v.gastos_medicos, v.refacciones, v.combustible, otros_gastos ," +
+"(select sum(descuento) from detalle_venta_ruta dvr, articulo a where dvr.venta_ruta_id=v.id and dvr.articulo_id=a.id and a.categoria_id=4) as descuento_cigarro," +
+"(select sum(descuento) from detalle_venta_ruta dvr, articulo a where dvr.venta_ruta_id=v.id and dvr.articulo_id=a.id and a.categoria_id!=4) as descuento_refresco," +
+"(select sum(utilidad) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id) as utilidad_bruta," +
+"((select sum(utilidad) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id)-(gastos_medicos+refacciones+combustible+otros_gastos)) as utilida_neta," +
+" (efectivo-total_liquidar) as f_s," +
+"v.total_liquidar," +
+"v.efectivo, " +
+"v.estado FROM venta_ruta v INNER JOIN ruta r ON v.ruta_id=r.id INNER JOIN usuario u ON v.usuario_id=u.id INNER JOIN empleado e1 ON v.vendedor_id=e1.id INNER JOIN empleado e2 ON v.ayudante_id=e2.id WHERE v.num_comprobante LIKE ? ORDER BY v.id ASC LIMIT ?,?");
 
                         ps.setString(1,"%" + texto +"%");
                         ps.setInt(2, (numPagina-1)*totalPorPagina);
@@ -50,7 +60,7 @@ public class VentaRutaDAO implements CrudVentaInterface<VentaRuta, DetalleVentaR
 			
 			while(rs.next())
 			{
-                                registros.add(new VentaRuta(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4),rs.getString(5),rs.getInt(6),rs.getString(7),rs.getInt(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getDate(12), rs.getDouble(13),rs.getDouble(14),rs.getDouble(15), rs.getDouble(16),rs.getDouble(17),rs.getDouble(18),rs.getDouble(19),rs.getDouble(20),rs.getDouble(21),rs.getDouble(22),rs.getDouble(23),rs.getString(24)));
+                                registros.add(new VentaRuta(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4),rs.getString(5),rs.getInt(6),rs.getString(7),rs.getInt(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getDate(12), rs.getDouble(13),rs.getDouble(14),rs.getDouble(15), rs.getDouble(16),rs.getDouble(17),rs.getDouble(18),rs.getDouble(19),rs.getDouble(20),rs.getDouble(21),rs.getDouble(22),rs.getDouble(23),rs.getDouble(24),rs.getDouble(25),rs.getDouble(26),rs.getString(27)));
 
 			}
 			ps.close();
@@ -342,14 +352,27 @@ public class VentaRutaDAO implements CrudVentaInterface<VentaRuta, DetalleVentaR
         List<VentaRuta> registros=new ArrayList();
         try {
             //ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre,v.ruta_id,r.nombre as ruta_nombre,v.num_comprobante,v.fecha,v.total_liquidar,(select sum(utilidad) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id) as utilidad,v.efectivo,v.estado FROM venta_ruta v INNER JOIN ruta r ON v.ruta_id=r.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.fecha>=? AND v.fecha<=?");
-            ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre, v.ruta_id, r.nombre as ruta_nombre,v.vendedor_id, e1.nombre as vendedor_nombre,v.ayudante_id, e2.nombre as ayudante_nombre,v.serie_comprobante,v.num_comprobante, v.fecha, v.otros_productos,v.creditos_cobrados, v.creditos_otorgados,v.gastos_medicos, v.refacciones, v.combustible, otros_gastos ,(select sum(descuento) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id) as descuento_producto,v.total_liquidar,(select sum(utilidad) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id) as utilidad,v.efectivo, v.estado FROM venta_ruta v INNER JOIN ruta r ON v.ruta_id=r.id INNER JOIN usuario u ON v.usuario_id=u.id INNER JOIN empleado e1 ON v.vendedor_id=e1.id INNER JOIN empleado e2 ON v.ayudante_id=e2.id WHERE v.fecha>=? AND v.fecha<=?");
+            //ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre, v.ruta_id, r.nombre as ruta_nombre,v.vendedor_id, e1.nombre as vendedor_nombre,v.ayudante_id, e2.nombre as ayudante_nombre,v.serie_comprobante,v.num_comprobante, v.fecha, v.otros_productos,v.creditos_cobrados, v.creditos_otorgados,v.gastos_medicos, v.refacciones, v.combustible, otros_gastos ,(select sum(descuento) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id) as descuento_producto,v.total_liquidar,(select sum(utilidad) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id) as utilidad,v.efectivo, v.estado FROM venta_ruta v INNER JOIN ruta r ON v.ruta_id=r.id INNER JOIN usuario u ON v.usuario_id=u.id INNER JOIN empleado e1 ON v.vendedor_id=e1.id INNER JOIN empleado e2 ON v.ayudante_id=e2.id WHERE v.fecha>=? AND v.fecha<=?");
+
+            ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre, v.ruta_id, r.nombre as ruta_nombre,v.vendedor_id, e1.nombre as vendedor_nombre,v.ayudante_id, e2.nombre as ayudante_nombre,v.serie_comprobante,v.num_comprobante, v.fecha, v.otros_productos,v.creditos_cobrados, v.creditos_otorgados,v.gastos_medicos, v.refacciones, v.combustible, otros_gastos ," +
+"((total_liquidar+otros_gastos+combustible+refacciones+gastos_medicos+creditos_otorgados-creditos_cobrados-otros_productos)+(select sum(descuento) from detalle_venta_ruta dvr where dvr.venta_ruta_id=v.id))as venta_bruta," +
+"(select sum(descuento) from detalle_venta_ruta dvr, articulo a where dvr.venta_ruta_id=v.id and dvr.articulo_id=a.id and a.categoria_id=4) as descuento_cigarro," +
+" (select sum(descuento) from detalle_venta_ruta dvr, articulo a where dvr.venta_ruta_id=v.id and dvr.articulo_id=a.id and a.categoria_id!=4) as descuento_refresco," +
+"((total_liquidar+otros_gastos+combustible+refacciones+gastos_medicos+creditos_otorgados-creditos_cobrados-otros_productos)-(select sum(utilidad) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id))as costo_venta," +
+" (select sum(utilidad) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id) as utilidad_bruta," +
+" ((select sum(utilidad) from detalle_venta_ruta where detalle_venta_ruta.venta_ruta_id=v.id)-(gastos_medicos+refacciones+combustible+otros_gastos)) as utilida_neta," +
+" (efectivo-total_liquidar) as f_s," +
+" v.total_liquidar," +
+" v.efectivo, " +
+" v.estado " +
+" FROM venta_ruta v INNER JOIN ruta r ON v.ruta_id=r.id INNER JOIN usuario u ON v.usuario_id=u.id INNER JOIN empleado e1 ON v.vendedor_id=e1.id INNER JOIN empleado e2 ON v.ayudante_id=e2.id WHERE v.fecha>=? AND v.fecha<=?");
 
             ps.setDate(1,fechaInicio);            
             ps.setDate(2,fechaFin);
             rs=ps.executeQuery();
             while(rs.next()){
                 //registros.add(new VentaRuta(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5),rs.getString(6),rs.getDate(7),rs.getDouble(8),rs.getDouble(9),rs.getDouble(10), rs.getString(11)));
-                registros.add(new VentaRuta(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4),rs.getString(5),rs.getInt(6),rs.getString(7),rs.getInt(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getDate(12), rs.getDouble(13),rs.getDouble(14),rs.getDouble(15), rs.getDouble(16),rs.getDouble(17),rs.getDouble(18),rs.getDouble(19),rs.getDouble(20),rs.getDouble(21),rs.getDouble(22),rs.getDouble(23),rs.getString(24)));
+                registros.add(new VentaRuta(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4),rs.getString(5),rs.getInt(6),rs.getString(7),rs.getInt(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getDate(12), rs.getDouble(13),rs.getDouble(14),rs.getDouble(15), rs.getDouble(16),rs.getDouble(17),rs.getDouble(18),rs.getDouble(19),rs.getDouble(20),rs.getDouble(21),rs.getDouble(22),rs.getDouble(23),rs.getDouble(24),rs.getDouble(25),rs.getDouble(26),rs.getDouble(27),rs.getDouble(28),rs.getString(29)));
 
             }
             ps.close();

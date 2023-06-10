@@ -2,10 +2,12 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RptIngreso" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="612a3d70-62aa-436b-a80f-75a952c370e7">
 	<property name="ireport.zoom" value="1.9487171000000019"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="96"/>
 	<parameter name="idIngreso" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
+ (select sum(di.cantidad) from detalle_ingreso di, articulo a where di.ingreso_id=ingreso.id and di.articulo_id=a.id) as paquetes,
+(select sum(di.piezas) from detalle_ingreso di, articulo a where di.ingreso_id=ingreso.id and di.articulo_id=a.id) as piezas,
      articulo.`codigo` AS articulo_codigo,
      articulo.`nombre` AS articulo_nombre,
      articulo.`formato` AS articulo_formato,
@@ -30,6 +32,8 @@ FROM
      INNER JOIN `usuario` usuario ON ingreso.`usuario_id` = usuario.`id`
 WHERE ingreso.`id`=$P{idIngreso}]]>
 	</queryString>
+	<field name="paquetes" class="java.math.BigDecimal"/>
+	<field name="piezas" class="java.math.BigDecimal"/>
 	<field name="articulo_codigo" class="java.lang.String"/>
 	<field name="articulo_nombre" class="java.lang.String"/>
 	<field name="articulo_formato" class="java.lang.Integer"/>
@@ -338,11 +342,6 @@ WHERE ingreso.`id`=$P{idIngreso}]]>
 			<rectangle>
 				<reportElement x="234" y="0" width="63" height="20" uuid="77ff815c-5c2e-485e-b9fa-fa9b83d17e6b"/>
 			</rectangle>
-			<textField>
-				<reportElement x="234" y="0" width="63" height="20" uuid="b54e493b-8b88-4c7d-ac4f-f1a28f6b2bae"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{detalle_ingreso_piezas_1}]]></textFieldExpression>
-			</textField>
 			<rectangle>
 				<reportElement x="297" y="0" width="148" height="20" backcolor="#CCCCCC" uuid="aef7d191-5592-4515-9672-c329f0bb28a1"/>
 			</rectangle>
@@ -367,9 +366,14 @@ WHERE ingreso.`id`=$P{idIngreso}]]>
 				<text><![CDATA[$]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="171" y="0" width="63" height="20" uuid="e44f5cb8-8abf-49bb-9305-0ce837deaaac"/>
+				<reportElement x="171" y="0" width="63" height="20" uuid="3ee30d0a-c8d6-4d42-b306-6b9ac0ddbe84"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{detalle_ingreso_cantidad_2}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{paquetes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="0" width="63" height="20" uuid="e595b0ab-6aeb-4781-9eaf-4b8a56efefe8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{piezas}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>

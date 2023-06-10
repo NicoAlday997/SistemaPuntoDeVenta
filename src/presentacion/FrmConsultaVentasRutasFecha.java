@@ -59,21 +59,50 @@ public class FrmConsultaVentasRutasFecha extends javax.swing.JInternalFrame {
 
         TableRowSorter orden=new TableRowSorter(tablaListado.getModel());
         tablaListado.setRowSorter(orden);
-        this.ocultarColumnas();
+        /*
+        registro[0] = Integer.toString(item.getId());
+            registro[1] = Integer.toString(item.getUsuarioId());
+            registro[2] = item.getUsuarioNombre();
+            registro[3] = Integer.toString(item.getRutaId());
+            registro[4] = item.getRutaNombre();
+            registro[5] = Integer.toString(item.getVendedorId());
+            registro[6] = item.getVendedorNombre();
+            registro[7] = Integer.toString(item.getAyudanteId());
+            registro[8] = item.getAyudanteNombre();
+            registro[9] = item.getSerieComprobante();
+            registro[10] = item.getNumComprobante();
+            registro[11] = sdf.format(item.getFecha());
+            registro[12] = Double.toString(item.getOtrosProductos());
+            registro[13] = Double.toString(item.getCreditosCobrados());
+            registro[14] = Double.toString(item.getCreditosOtorgados());
+            registro[15] = Double.toString(item.getGastosMedicos());
+            registro[16] = Double.toString(item.getRefacciones());
+            registro[17] = Double.toString(item.getCombustible());
+            registro[18] = Double.toString(item.getOtrosGastos());
+            registro[19] = Double.toString(item.getVentaBruta());
+            registro[20] = Double.toString(item.getDescuentoCigarro());
+            registro[21] = Double.toString(item.getDescuentoRefresco());
+            registro[22] = Double.toString(item.getCostoVenta());
+            registro[23] = Double.toString(item.getUtilidadBruta());
+            registro[24] = Double.toString(item.getUtilidadNeta());
+            registro[25] = Double.toString(item.getFs());
+            registro[26] = Double.toString(item.getTotalLiquidar());
+            registro[27] = Double.toString(item.getEfectivo());
+            registro[28] = item.getEstado();*/
+        int array[] = {1,3,5,7,12,13,14};
+        this.ocultarColumnas(array);
+        //this.ocultarColumnas();
         lblTotalRegistros.setText("Mostrando: " + this.CONTROL.totalMostrados()+ " de un total de "+ this.CONTROL.total() + " registros");
     }
     
-    private void ocultarColumnas()
+    private void ocultarColumnas(int[] array)
     {
-        tablaListado.getColumnModel().getColumn(1).setMaxWidth(0);
-        tablaListado.getColumnModel().getColumn(1).setMinWidth(0);
-        tablaListado.getTableHeader().getColumnModel().getColumn(1).setMaxWidth(0);
-        tablaListado.getTableHeader().getColumnModel().getColumn(1).setMinWidth(0);
-        
-        tablaListado.getColumnModel().getColumn(3).setMaxWidth(0);
-        tablaListado.getColumnModel().getColumn(3).setMinWidth(0);
-        tablaListado.getTableHeader().getColumnModel().getColumn(3).setMaxWidth(0);
-        tablaListado.getTableHeader().getColumnModel().getColumn(3).setMinWidth(0);
+        for(int i=0;i<array.length;i++){
+        tablaListado.getColumnModel().getColumn(array[i]).setMaxWidth(0);
+        tablaListado.getColumnModel().getColumn(array[i]).setMinWidth(0);
+        tablaListado.getTableHeader().getColumnModel().getColumn(array[i]).setMaxWidth(0);
+        tablaListado.getTableHeader().getColumnModel().getColumn(array[i]).setMinWidth(0);
+        }
     } 
    
    
@@ -118,8 +147,10 @@ public class FrmConsultaVentasRutasFecha extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Consulta de ventas entre fechas");
+        setTitle("Consulta de ventas rutas entre fechas");
         setToolTipText("");
+        setAutoscrolls(true);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         tabGeneral.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -157,7 +188,7 @@ public class FrmConsultaVentasRutasFecha extends javax.swing.JInternalFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1050, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1654, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -176,7 +207,7 @@ public class FrmConsultaVentasRutasFecha extends javax.swing.JInternalFrame {
                         .addComponent(btnBuscar)
                         .addGap(46, 46, 46)
                         .addComponent(btnReporteComprobante)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 412, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1021, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -192,10 +223,10 @@ public class FrmConsultaVentasRutasFecha extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(dcFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(lblTotalRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13))
+                .addGap(25, 25, 25))
         );
 
         tabGeneral.addTab("Listado", jPanel1);
@@ -204,11 +235,11 @@ public class FrmConsultaVentasRutasFecha extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabGeneral)
+            .addComponent(tabGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, 1659, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabGeneral)
+            .addComponent(tabGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
         );
 
         pack();
